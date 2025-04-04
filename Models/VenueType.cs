@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace sshBackend1.Models;
+namespace SSH_FrontEnd.Models;
 
 public partial class VenueType
 {

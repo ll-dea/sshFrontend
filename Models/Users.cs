@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using NLog.Web.LayoutRenderers;
 using System;
-using sshBackend1.Models;
+using SSH_FrontEnd.Models;
 
-namespace sshBackend1.Models
+namespace SSH_FrontEnd.Models
 {
     public class Users : IdentityUser
     {
