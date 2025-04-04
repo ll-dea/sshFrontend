@@ -1,9 +1,9 @@
 ﻿
-using sshBackend1.Models;
+using SSH_FrontEnd.Models;
 using System;
 using System.Collections.Generic;
 
-namespace sshBackend1.Models;
+namespace SSH_FrontEnd.Models;
 
 public partial class FlowerArrangementOrder
 {

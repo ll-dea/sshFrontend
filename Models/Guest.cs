@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace sshBackend1.Models;
+namespace SSH_FrontEnd.Models;
 
 public partial class Guest
 {

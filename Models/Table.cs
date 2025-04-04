@@ -1,5 +1,5 @@
-﻿using sshBackend1.Models;
-namespace sshBackend1.Models
+﻿using SSH_FrontEnd.Models;
+namespace SSH_FrontEnd.Models
 
 {
     public class Table
