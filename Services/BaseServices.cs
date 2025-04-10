@@ -1,10 +1,9 @@
-﻿using MagicVilla_Utility;
-using MagicVilla_Web.Models;
-using MagicVilla_Web.Services.IServices;
-using Newtonsoft.Json;
-using SSH_FrontEnd.Models;
-using System.Net.Http;
+﻿using SSH_FrontEnd.Models;
+using SSH_FrontEnd.Services.IServices;
 using System.Text;
+using Utility;
+using Newtonsoft.Json;
+using System.Net.Http;
 
 namespace MagicVilla_Web.Services
 {
@@ -89,6 +88,7 @@ namespace MagicVilla_Web.Services
             }
         }
 
+        
     }
 }
 
