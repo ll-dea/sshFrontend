@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "SSH_FrontEnd": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:63200;http://localhost:63201"
+    }
+  }
+}

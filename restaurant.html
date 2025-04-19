@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css"
+          rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Restaurant Booking</title>
+</head>
+<body>
+    <!-- SIDEBAR -->
+    <section id="sidebar">
+        <a href="index.html" class="brand">
+            <i class="bx bxs-smile"></i>
+            <span class="text">EventPlanner</span>
+        </a>
+        <ul class="side-menu top">
+            <li class="active">
+                <a href="index.html">
+                    <i class="bx bxs-dashboard"></i>
+                    <span class="text">Dashboard</span>
+                </a>
+            </li>
+            <li>
+                <a href="restaurant.html">
+                    <i class="bx bxs-food-menu"></i>
+                    <span class="text">Restaurant</span>
+                </a>
+            </li>
+            <!-- Other menu items -->
+        </ul>
+    </section>
+    <!-- SIDEBAR -->
+    <!-- CONTENT -->
+    <section id="content">
+        <nav>
+            <i class="bx bx-menu"></i>
+            <a href="#" class="nav-link">Categories</a>
+            <form action="#">
+                <div class="form-input">
+                    <input type="search" placeholder="Search..." />
+                    <button type="submit" class="search-btn">
+                        <i class="bx bx-search"></i>
+                    </button>
+                </div>
+            </form>
+        </nav>
+
+        <main>
+            <!-- Restaurant Section with Cards -->
+            <div class="restaurant-section">
+                <div class="restaurant-list">
+                    <!-- Restaurant Card 1 -->
+                    <div class="restaurant-card">
+                        <img src="img/r1.png"
+                             alt="Gourmet Kitchen"
+                             class="restaurant-img" />
+                        <div class="restaurant-info">
+                            <h4>Gourmet Kitchen</h4>
+                            <button class="book-btn">Book</button>
+                        </div>
+                    </div>
+
+                    <!-- Restaurant Card 2 -->
+                    <div class="restaurant-card">
+                        <img src="img/r2.png" alt="Urban Bites" class="restaurant-img" />
+                        <div class="restaurant-info">
+                            <h4>Urban Bites</h4>
+                            <button class="book-btn">Book</button>
+                        </div>
+                    </div>
+
+                    <!-- Restaurant Card 3 -->
+                    <div class="restaurant-card">
+                        <img src="img/r3.png"
+                             alt="Seafood Delight"
+                             class="restaurant-img" />
+                        <div class="restaurant-info">
+                            <h4>Seafood Delight</h4>
+                            <button class="book-btn">Book</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal for booking -->
+            <div class="booking-modal" id="bookingModal" style="display: none">
+                <div class="modal-content">
+                    <h3>Book a Restaurant</h3>
+                    <label for="date">Select Date:</label>
+                    <input type="date" id="date" />
+                    <label for="time">Select Time:</label>
+                    <input type="time" id="time" />
+                    <button id="confirmBooking">Confirm Booking</button>
+                    <button id="closeModal">Close</button>
+                </div>
+            </div>
+        </main>
+    </section>
+
+    <script>
+      // Show the booking modal when "Book" button is clicked
+      document.querySelectorAll(".book-btn").forEach(function (button) {
+        button.addEventListener("click", function () {
+          const card = button.closest(".restaurant-card");
+          const restaurantName = card.querySelector(
+            ".restaurant-info h4"
+          ).innerText;
+
+          localStorage.setItem("selectedRestaurant", restaurantName);
+          document.getElementById("bookingModal").style.display = "flex";
+        });
+      });
+
+      // Close modal
+      document
+        .getElementById("closeModal")
+        .addEventListener("click", function () {
+          document.getElementById("bookingModal").style.display = "none";
+        });
+
+      // Confirm booking
+      document
+        .getElementById("confirmBooking")
+        .addEventListener("click", function () {
+          const date = document.getElementById("date").value;
+          const time = document.getElementById("time").value;
+          const restaurantName = localStorage.getItem("selectedRestaurant");
+
+          if (date && time && restaurantName) {
+            const newOrder = {
+              restaurant: restaurantName,
+              date: date,
+              time: time,
+              status: "Pending",
+            };
+
+            const existingOrders =
+              JSON.parse(localStorage.getItem("recentOrders")) || [];
+
+            existingOrders.push(newOrder);
+
+            localStorage.setItem(
+              "recentOrders",
+              JSON.stringify(existingOrders)
+            );
+
+            alert(
+              "Booking confirmed for " +
+                date +
+                " at " +
+                time +
+                " with " +
+                restaurantName
+            );
+
+            document.getElementById("bookingModal").style.display = "none";
+          } else {
+            alert("Please select both a date and time!");
+          }
+        });
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>
