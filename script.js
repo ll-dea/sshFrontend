@@ -1,89 +1,63 @@
-﻿const allSideMenu = document.querySelectorAll("#sidebar .side-menu.top li a");
+﻿// Aktivizimi i menuse në sidebar
+const allSideMenu = document.querySelectorAll("#sidebar .side-menu.top li a");
 
 allSideMenu.forEach((item) => {
-    const li = item.parentElement;
-
-    item.addEventListener("click", function () {
-        allSideMenu.forEach((i) => {
-            i.parentElement.classList.remove("active");
-        });
-        li.classList.add("active");
+  const li = item.parentElement;
+  item.addEventListener("click", function () {
+    allSideMenu.forEach((i) => {
+      i.parentElement.classList.remove("active");
     });
+    li.classList.add("active");
+  });
 });
 
-// TOGGLE SIDEBAR
+// Toggle i sidebar-it
 const menuBar = document.querySelector("#content nav .bx.bx-menu");
 const sidebar = document.getElementById("sidebar");
 
-menuBar.addEventListener("click", function () {
-    sidebar.classList.toggle("hide");
+menuBar?.addEventListener("click", function () {
+  sidebar.classList.toggle("hide");
 });
 
+// Search button për mobile
 const searchButton = document.querySelector(
-    "#content nav form .form-input button"
+  "#content nav form .form-input button"
 );
 const searchButtonIcon = document.querySelector(
-    "#content nav form .form-input button .bx"
+  "#content nav form .form-input button .bx"
 );
 const searchForm = document.querySelector("#content nav form");
 
-searchButton.addEventListener("click", function (e) {
-    if (window.innerWidth < 576) {
-        e.preventDefault();
-        searchForm.classList.toggle("show");
-        if (searchForm.classList.contains("show")) {
-            searchButtonIcon.classList.replace("bx-search", "bx-x");
-        } else {
-            searchButtonIcon.classList.replace("bx-x", "bx-search");
-        }
+searchButton?.addEventListener("click", function (e) {
+  if (window.innerWidth < 576) {
+    e.preventDefault();
+    searchForm.classList.toggle("show");
+    if (searchForm.classList.contains("show")) {
+      searchButtonIcon.classList.replace("bx-search", "bx-x");
+    } else {
+      searchButtonIcon.classList.replace("bx-x", "bx-search");
     }
+  }
 });
 
 if (window.innerWidth < 768) {
-    sidebar.classList.add("hide");
+  sidebar?.classList.add("hide");
 } else if (window.innerWidth > 576) {
-    searchButtonIcon.classList.replace("bx-x", "bx-search");
-    searchForm.classList.remove("show");
+  searchButtonIcon?.classList.replace("bx-x", "bx-search");
+  searchForm?.classList.remove("show");
 }
 
 window.addEventListener("resize", function () {
-    if (this.innerWidth > 576) {
-        searchButtonIcon.classList.replace("bx-x", "bx-search");
-        searchForm.classList.remove("show");
-    }
+  if (this.innerWidth > 576) {
+    searchButtonIcon?.classList.replace("bx-x", "bx-search");
+    searchForm?.classList.remove("show");
+  }
 });
 
+// Dark mode switch
 const switchMode = document.getElementById("switch-mode");
-
-switchMode.addEventListener("change", function () {
-    if (this.checked) {
-        document.body.classList.add("dark");
-    } else {
-        document.body.classList.remove("dark");
-    }
-});
-
-// Pasi të ngarkohet faqja, kontrolloni nëse ka rezervime të ruajtura
-window.addEventListener("load", function () {
-    const recentOrder = localStorage.getItem("recentOrder");
-    if (recentOrder) {
-        const order = JSON.parse(recentOrder);
-
-        // Gjeni elementin e tabelës dhe shtoni rreshtin për rezervimin
-        const tbody = document.getElementById("recentOrders");
-        const newRow = document.createElement("tr");
-
-        newRow.innerHTML = `
-		<td><img src="img/people.png" /><p>Anonymous</p></td>
-		<td>${order.date} at ${order.time}</td>
-		<td><span class="status completed">Completed</span></td>
-	  `;
-
-        tbody.appendChild(newRow);
-
-        // Pasi të shtoni rezervimin, mund të fshini atë nga localStorage
-        localStorage.removeItem("recentOrder");
-    }
+switchMode?.addEventListener("change", function () {
+  document.body.classList.toggle("dark", this.checked);
 });
 
 // Kontrollo nëse përdoruesi është loguar
@@ -91,51 +65,138 @@ const isLoggedIn = localStorage.getItem("loggedIn");
 const user = localStorage.getItem("user");
 
 if (!user) {
-    // Nëse nuk ka user të regjistruar fare, dërgo te signup
-    window.location.href = "signup.html";
+  window.location.href = "signup.html";
 } else if (isLoggedIn !== "true") {
-    // Nëse është regjistruar por jo i loguar, dërgo te login
-    window.location.href = "login.html";
+  window.location.href = "login.html";
 }
 
-// LOGOUT button
+// LOGOUT
 document.querySelector(".logout")?.addEventListener("click", function (e) {
-    e.preventDefault();
-    localStorage.removeItem("loggedIn");
-    window.location.href = "login.html";
+  e.preventDefault();
+  localStorage.removeItem("loggedIn");
+  window.location.href = "login.html";
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    const isLoggedIn = localStorage.getItem("loggedIn");
+// Modal
+const modal = document.getElementById("addEventModal");
+const openModalBtn = document.getElementById("openModalBtn");
+const closeModal = document.querySelector(".modal .close");
 
-    if (!isLoggedIn || isLoggedIn !== "true") {
-        window.location.href = "signup.html"; // ose "login.html" nëse preferon
-    }
+openModalBtn?.addEventListener("click", () => {
+  modal.style.display = "block";
 });
 
-document.addEventListener("DOMContentLoaded", function () {
-    const orders = JSON.parse(localStorage.getItem("recentOrders")) || [];
-    const tbody = document.querySelector(".order table tbody");
+closeModal?.addEventListener("click", () => {
+  modal.style.display = "none";
+});
 
-    // Pastro rreshtat ekzistues në tabelë
-    tbody.innerHTML = "";
+window.addEventListener("click", (event) => {
+  if (event.target === modal) {
+    modal.style.display = "none";
+  }
+});
 
-    // Shto rezervimet në tabelë
-    orders
-        .slice(-5)
-        .reverse()
-        .forEach((order) => {
-            const tr = document.createElement("tr");
+// Forma per shtimin e eventit
+const addEventForm = document.getElementById("addEventForm");
+const recentOrdersTable = document.getElementById("recentOrders");
 
-            tr.innerHTML = `
-  <td>
-  <img src="img/logo.png" />
-  <p>${order.florist}</p>
-  </td>
-  <td>${order.date} at ${order.time}</td>
-  <td><span class="status pending">${order.status}</span></td>
-`;
+function loadEventsToUserDashboard() {
+  const events = JSON.parse(localStorage.getItem("recentOrders")) || [];
+  if (!recentOrdersTable) return;
 
-            tbody.appendChild(tr);
-        });
+  recentOrdersTable.innerHTML = "";
+  events
+    .slice()
+    .reverse()
+    .forEach((event) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+      <td>${event.name}</td>
+      <td>${event.type}</td>
+      <td>${event.date}</td>
+      <td><span class="status ${event.status.toLowerCase()}">${
+        event.status
+      }</span></td>
+    `;
+      recentOrdersTable.appendChild(tr);
+    });
+}
+
+function loadEventsToMyEventsPage() {
+  const events = JSON.parse(localStorage.getItem("recentOrders")) || [];
+  const eventListTable = document.getElementById("eventListTable");
+  if (!eventListTable) return;
+
+  eventListTable.innerHTML = "";
+  events
+    .slice()
+    .reverse()
+    .forEach((event) => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+      <td>${event.name}</td>
+      <td>${event.date}</td>
+      <td>${event.type}</td>
+      <td><span class="status ${event.status.toLowerCase()}">${
+        event.status
+      }</span></td>
+    `;
+      eventListTable.appendChild(tr);
+    });
+}
+
+// Add Event
+addEventForm?.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  const name = document.getElementById("eventName").value;
+  let date = document.getElementById("eventDate").value;
+  const eventTypeId = document.getElementById("eventTypeId").value;
+
+  date = date.replace("T", " ");
+
+  const eventTypes = {
+    1: "Wedding",
+    2: "Birthday",
+    3: "Conference",
+  };
+
+  const newEvent = {
+    name,
+    date,
+    status: "Pending",
+    type: eventTypes[eventTypeId],
+  };
+
+  const events = JSON.parse(localStorage.getItem("recentOrders")) || [];
+  events.push(newEvent);
+  localStorage.setItem("recentOrders", JSON.stringify(events));
+
+  modal.style.display = "none";
+  addEventForm.reset();
+  loadEventsToUserDashboard();
+});
+
+// Seed sample
+if (!localStorage.getItem("recentOrders")) {
+  const sampleEvents = [
+    {
+      name: "Wedding Ceremony",
+      date: "2025-05-02 15:00",
+      status: "Pending",
+      type: "Wedding",
+    },
+    {
+      name: "Birthday Party",
+      date: "2025-05-10 18:30",
+      status: "Confirmed",
+      type: "Birthday",
+    },
+  ];
+  localStorage.setItem("recentOrders", JSON.stringify(sampleEvents));
+}
+
+window.addEventListener("load", () => {
+  loadEventsToUserDashboard();
+  loadEventsToMyEventsPage();
 });
