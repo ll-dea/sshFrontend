@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SSH_FrontEnd")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+314614d34503ec80c023813c793a8d5f703ed996")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dd2f586e3e9b73ca719eb5c83e38d4a564fc492f")]
 [assembly: System.Reflection.AssemblyProductAttribute("SSH_FrontEnd")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SSH_FrontEnd")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
