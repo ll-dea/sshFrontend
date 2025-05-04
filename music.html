@@ -96,66 +96,68 @@
     </section>
 
     <script>
-      // Show the booking modal when "Book" button is clicked
-      document.querySelectorAll(".book-btn").forEach(function (button) {
-        button.addEventListener("click", function () {
-          const card = button.closest(".music-card");
-          const musicName = card.querySelector(".music-info h4").innerText;
+        // Show the booking modal when "Book" button is clicked
+        document.querySelectorAll(".book-btn").forEach(function (button) {
+            button.addEventListener("click", function () {
+                const card = button.closest(".music-card");
+                const musicName = card.querySelector(".music-info h4").innerText;
 
-          localStorage.setItem("selectedMusic", musicName);
-          document.getElementById("bookingModal").style.display = "flex";
-        });
-      });
-
-      // Close modal
-      document
-        .getElementById("closeModal")
-        .addEventListener("click", function () {
-          document.getElementById("bookingModal").style.display = "none";
+                localStorage.setItem("selectedMusic", musicName);
+                document.getElementById("bookingModal").style.display = "flex";
+            });
         });
 
-      // Confirm booking
-      document
-        .getElementById("confirmBooking")
-        .addEventListener("click", function () {
-          const date = document.getElementById("date").value;
-          const time = document.getElementById("time").value;
-          const musicName = localStorage.getItem("selectedMusic");
+        // Close modal
+        document
+            .getElementById("closeModal")
+            .addEventListener("click", function () {
+                document.getElementById("bookingModal").style.display = "none";
+            });
 
-          if (date && time && musicName) {
-            const newOrder = {
-              music: musicName,
-              date: date,
-              time: time,
-              status: "Pending",
-            };
+        // Confirm booking
+        document
+            .getElementById("confirmBooking")
+            .addEventListener("click", function () {
+                const date = document.getElementById("date").value;
+                const time = document.getElementById("time").value;
+                const musicName = localStorage.getItem("selectedMusic");
 
-            const existingOrders =
-              JSON.parse(localStorage.getItem("recentOrders")) || [];
+                if (date && time && musicName) {
+                    const newOrder = {
+                        music: musicName,
+                        date: date,
+                        time: time,
+                        status: "Pending",
+                    };
 
-            existingOrders.push(newOrder);
+                    const existingOrders =
+                        JSON.parse(localStorage.getItem("recentOrders")) || [];
 
-            localStorage.setItem(
-              "recentOrders",
-              JSON.stringify(existingOrders)
-            );
+                    existingOrders.push(newOrder);
 
-            alert(
-              "Booking confirmed for " +
-                date +
-                " at " +
-                time +
-                " with " +
-                musicName
-            );
+                    localStorage.setItem(
+                        "recentOrders",
+                        JSON.stringify(existingOrders)
+                    );
 
-            document.getElementById("bookingModal").style.display = "none";
-          } else {
-            alert("Please select both a date and time!");
-          }
-        });
+                    alert(
+                        "Booking confirmed for " +
+                        date +
+                        " at " +
+                        time +
+                        " with " +
+                        musicName
+                    );
+
+                    document.getElementById("bookingModal").style.display = "none";
+                } else {
+                    alert("Please select both a date and time!");
+                }
+            });
     </script>
 
     <script src="script.js"></script>
+    <script type="module" src="musicController.js"></script>
+
 </body>
 </html>

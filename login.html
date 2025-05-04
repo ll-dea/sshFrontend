@@ -18,25 +18,27 @@
     </div>
 
     <script>
-      document
-        .getElementById("loginForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-          const username = document.getElementById("username").value;
-          const password = document.getElementById("password").value;
-          const storedUser = JSON.parse(localStorage.getItem("user"));
+        document
+            .getElementById("loginForm")
+            .addEventListener("submit", function (e) {
+                e.preventDefault();
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
+                const storedUser = JSON.parse(localStorage.getItem("user"));
 
-          if (
-            storedUser &&
-            storedUser.username === username &&
-            storedUser.password === password
-          ) {
-            localStorage.setItem("loggedIn", "true");
-            window.location.href = "index.html";
-          } else {
-            alert("Invalid credentials");
-          }
-        });
+                if (
+                    storedUser &&
+                    storedUser.username === username &&
+                    storedUser.password === password
+                ) {
+                    localStorage.setItem("loggedIn", "true");
+                    window.location.href = "index.html";
+                } else {
+                    alert("Invalid credentials");
+                }
+            });
     </script>
+    <script type="module" src="controllers/loginController.js"></script>
+
 </body>
 </html>

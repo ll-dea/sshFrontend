@@ -19,20 +19,22 @@
     </div>
 
     <script>
-      document
-        .getElementById("signupForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-          const username = document.getElementById("username").value;
-          const password = document.getElementById("password").value;
+        document
+            .getElementById("signupForm")
+            .addEventListener("submit", function (e) {
+                e.preventDefault();
+                const username = document.getElementById("username").value;
+                const password = document.getElementById("password").value;
 
-          // Ruaj të dhënat në localStorage
-          localStorage.setItem("user", JSON.stringify({ username, password }));
-          localStorage.setItem("loggedIn", "false");
+                // Ruaj të dhënat në localStorage
+                localStorage.setItem("user", JSON.stringify({ username, password }));
+                localStorage.setItem("loggedIn", "false");
 
-          alert("User registered successfully!");
-          window.location.href = "login.html";
-        });
+                alert("User registered successfully!");
+                window.location.href = "login.html";
+            });
     </script>
+    <script type="module" src="signupController.js"></script>
+
 </body>
 </html>
