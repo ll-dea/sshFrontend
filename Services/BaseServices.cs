@@ -1,36 +1,38 @@
 ﻿using SSH_FrontEnd.Models;
 using SSH_FrontEnd.Services.IServices;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
 using System.Text;
 using Utility;
-using Newtonsoft.Json;
-using System.Net.Http;
 
-namespace MagicVilla_Web.Services
+namespace SSH_FrontEnd.Services
 {
     public class BaseServices : IBaseServices
     {
-        public APIResponse responseModel { get; set; }
-        public IHttpClientFactory httpClient { get; set; }
-        public BaseServices(IHttpClientFactory httpClient)
+        private readonly IHttpClientFactory _httpClientFactory;
+        public APIResponse ResponseModel { get; set; }
+
+        public BaseServices(IHttpClientFactory httpClientFactory)
         {
-            this.responseModel = new();
-            this.httpClient = httpClient;
+            _httpClientFactory = httpClientFactory;
+            ResponseModel = new APIResponse();
         }
 
         public async Task<T> SendAsync<T>(APIRequest apiRequest)
         {
             try
             {
-                var client = httpClient.CreateClient("MagicAPI");
-                HttpRequestMessage message = new HttpRequestMessage();
+                var client = _httpClientFactory.CreateClient("SSHAPI");
+                var message = new HttpRequestMessage();
                 message.Headers.Add("Accept", "application/json");
                 message.RequestUri = new Uri(apiRequest.Url);
+
                 if (apiRequest.Data != null)
                 {
-                    message.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data),
-                                            Encoding.UTF8, "application/json");
+                    message.Content = new StringContent(
+                        JsonConvert.SerializeObject(apiRequest.Data),
+                        Encoding.UTF8, "application/json");
                 }
-
 
                 switch (apiRequest.ApiType)
                 {
@@ -46,50 +48,22 @@ namespace MagicVilla_Web.Services
                     default:
                         message.Method = HttpMethod.Get;
                         break;
-
                 }
-                HttpResponseMessage apiResponse = null;
-                apiResponse = await client.SendAsync(message);
 
+                var apiResponse = await client.SendAsync(message);
                 var apiContent = await apiResponse.Content.ReadAsStringAsync();
-                try
-                {
-                    APIResponse ApiResponse = JsonConvert.DeserializeObject<APIResponse>(apiContent);
-                    if (apiResponse.StatusCode == System.Net.HttpStatusCode.BadRequest || apiResponse.StatusCode == System.Net.HttpStatusCode.NotFound)
-                    {
-                        ApiResponse.StatusCode = System.Net.HttpStatusCode.BadRequest;
-                        ApiResponse.IsSuccess = false;
-                        var res = JsonConvert.SerializeObject(ApiResponse);
-                        var returnObj = JsonConvert.DeserializeObject<T>(res);
-                        return returnObj;
-                    }
-                }
-                catch (Exception e)
-                {
-                    var exceptionResponse = JsonConvert.DeserializeObject<T>(apiContent);
-                    return exceptionResponse;
-                }
-                var APIResponse = JsonConvert.DeserializeObject<T>(apiContent);
-                return APIResponse;
+                return JsonConvert.DeserializeObject<T>(apiContent);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                var dto = new APIResponse()
+                var dto = new APIResponse
                 {
-                    ErrorsMessages = new List<string> { Convert.ToString(e.Message) },
+                    ErrorMessages = new List<string> { ex.Message },
                     IsSuccess = false
                 };
                 var res = JsonConvert.SerializeObject(dto);
-                var APIResponse = JsonConvert.DeserializeObject<T>(res);
-                return APIResponse;
-
-
-
+                return JsonConvert.DeserializeObject<T>(res);
             }
         }
-
-        
     }
 }
-
-

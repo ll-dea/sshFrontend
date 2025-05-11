@@ -2,9 +2,8 @@
 
 namespace SSH_FrontEnd.Services.IServices
 {
-    public interface IBaseServices
+    public interface IBaseServices  
     {
         Task<T> SendAsync<T>(APIRequest apiRequest);
-
     }
 }

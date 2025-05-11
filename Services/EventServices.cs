@@ -1,4 +1,4 @@
-﻿using MagicVilla_Web.Services;
+﻿using SSH_FrontEnd.Services;
 using Microsoft.Extensions.Configuration;
 using SSH_FrontEnd.Models;
 using SSH_FrontEnd.Models.DTOs;
