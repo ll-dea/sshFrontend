@@ -25,7 +25,7 @@ namespace SSH_FrontEnd.Services
             {
                 ApiType = SD.ApiType.POST,
                 Data = dto,
-                Url = eventUrl + "/api/EventAPI"
+                Url = eventUrl + "/api/Event"
                 
             });
         }
@@ -34,7 +34,7 @@ namespace SSH_FrontEnd.Services
             return SendAsync<T>(new APIRequest()
             {
                 ApiType = SD.ApiType.DELETE,
-                Url = eventUrl + "api/EventAPI/" + id
+                Url = eventUrl + "api/Event/" + id
             });
         }
         public Task<T> GetAllAsync<T>()
@@ -42,7 +42,7 @@ namespace SSH_FrontEnd.Services
             return SendAsync<T>(new APIRequest()
             {
                 ApiType = SD.ApiType.GET,
-                Url = eventUrl + "api/EventAPI"
+                Url = eventUrl + "api/Event"
             });
         }
         public Task<T> GetAsync<T>(int id)
@@ -50,7 +50,7 @@ namespace SSH_FrontEnd.Services
             return SendAsync<T>(new APIRequest()
             {
                 ApiType = SD.ApiType.GET,
-                Url = eventUrl + "api/EventAPI/" + id
+                Url = eventUrl + "api/Event/" + id
             });
         }
         public Task<T> UpdateAsync<T>(EventDTO dto)

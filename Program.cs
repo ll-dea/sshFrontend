@@ -1,7 +1,16 @@
+using SSH_FrontEnd;
+using AutoMapper;
+using SSH_FrontEnd.Services.IServices;
+using SSH_FrontEnd.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddAutoMapper(typeof(MappingConfig));
+
+builder.Services.AddHttpClient<IEventServices, EventServices>();
+builder.Services.AddScoped<IEventServices, EventServices>();
 
 var app = builder.Build();
 
