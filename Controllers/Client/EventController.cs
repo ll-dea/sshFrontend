@@ -4,7 +4,7 @@ using Newtonsoft.Json;
 using SSH_FrontEnd.Models;
 using SSH_FrontEnd.Models.DTOs;
 using SSH_FrontEnd.Services.IServices;
-namespace SSH_FrontEnd.Controllers
+namespace SSH_FrontEnd.Controllers.Client
 
 {
     public class EventController: Controller
@@ -25,7 +25,8 @@ namespace SSH_FrontEnd.Controllers
                 list = JsonConvert.DeserializeObject<List<EventDTO>>(Convert.ToString(response.Result));
             }
 
-            return View(list);
+            return View("~/Views/Client/Event/IndexEvent.cshtml", list);
+
         }
         public async Task<IActionResult> CreateEvent()
         {
