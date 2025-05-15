@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using SSH_FrontEnd.Models;
 using SSH_FrontEnd.Models.DTOs;
 using SSH_FrontEnd.Services.IServices;
+using System.Collections.Generic;
 namespace SSH_FrontEnd.Controllers.Client
 
 {
@@ -32,7 +33,7 @@ namespace SSH_FrontEnd.Controllers.Client
         {
 
 
-            return View();
+            return View("~/Views/Client/Event/CreateEvent.cshtml");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -50,7 +51,7 @@ namespace SSH_FrontEnd.Controllers.Client
             }
             TempData["error"] = "Error encountered";
 
-            return View(model);
+            return View("~/Views/Client/Event/CreateEvent.cshtml", model);
 
         }
         public async Task<IActionResult> UpdateEvent(int eventId)
@@ -61,7 +62,7 @@ namespace SSH_FrontEnd.Controllers.Client
                 TempData["success"] = "Event updated successfully";
 
                 EventDTO model = JsonConvert.DeserializeObject<EventDTO>(Convert.ToString(response.Result));
-                return View(_mapper.Map<EventDTO>(model));
+                return View("~/Views/Client/Event/UpdateEvent.cshtml", _mapper.Map<EventDTO>(model));
             }
 
             return NotFound();
@@ -82,7 +83,8 @@ namespace SSH_FrontEnd.Controllers.Client
             }
             TempData["error"] = "Error encountered";
 
-            return View(model);
+            return View("~/Views/Client/Event/UpdateEvent.cshtml", model);
+
 
         }
         public async Task<IActionResult> DeleteEvent(int eventId)
@@ -90,12 +92,21 @@ namespace SSH_FrontEnd.Controllers.Client
             var response = await _eventService.GetAsync<APIResponse>(eventId);
             if (response != null && response.IsSuccess)
             {
-                EventDTO model = JsonConvert.DeserializeObject<EventDTO>(Convert.ToString(response.Result));
-                return View(model);
+                var jsonResult = Convert.ToString(response.Result);
+                var model = JsonConvert.DeserializeObject<EventDTO>(jsonResult);
+
+                if (model == null)
+                {
+                    TempData["error"] = "Failed to deserialize event data.";
+                    return NotFound();
+                }
+
+                return View("~/Views/Client/Event/DeleteEvent.cshtml", model);
             }
 
             return NotFound();
         }
+
         [HttpPost]
         [ValidateAntiForgeryToken]
 

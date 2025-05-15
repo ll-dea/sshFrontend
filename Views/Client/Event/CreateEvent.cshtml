@@ -1,0 +1,27 @@
+﻿@model SSH_FrontEnd.Models.DTOs.EventDTO
+@{
+    Layout = "_Layout";
+    ViewData["Title"] = "Create Event";
+}
+<h2>Create Event</h2>
+
+<form asp-action="CreateEvent" method="post">
+    <div class="form-group">
+        <label asp-for="EventName" class="control-label"></label>
+        <input asp-for="EventName" class="form-control" />
+        <span asp-validation-for="EventName" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EventTypeId" class="control-label"></label>
+        <input asp-for="EventTypeId" class="form-control" />
+        <span asp-validation-for="EventTypeId" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EventDate" class="control-label"></label>
+        <input asp-for="EventDate" type="datetime-local" class="form-control" />
+        <span asp-validation-for="EventDate" class="text-danger"></span>
+    </div>
+    <input type="hidden" asp-for="TenantId" />
+    <button type="submit" class="btn btn-primary">Create</button>
+    <a asp-action="IndexEvent" class="btn btn-secondary">Cancel</a>
+</form>

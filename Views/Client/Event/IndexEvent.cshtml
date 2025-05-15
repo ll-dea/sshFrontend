@@ -59,6 +59,9 @@
         </nav>
 
         <!-- MAIN -->
+        <div class="col text-end pt-1">
+            <a asp-controller="Event" asp-action="CreateEvent" class="btn btn-outline-danger-primary"><i class="bi bi-plus-square-fill"></i>Create New Event</a>
+        </div>
         <main>
             <div class="head-title">
                 <div class="left">
@@ -85,6 +88,7 @@
                                 <th>Date & Time</th>
                                 <th>Type</th>
                                 <th>Status</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody id="eventListTable">
@@ -95,6 +99,12 @@
                                     <td>@evt.EventDate?.ToString("yyyy-MM-dd HH:mm")</td>
                                     <td>@(evt.EventTypeId.HasValue ? "Type " + evt.EventTypeId : "N/A")</td>
                                     <td>Upcoming</td> <!-- You can change this based on logic -->
+                                    <td>
+                                        @* <a asp-controller="Villa" asp-action="GetVilla" class="btn btn-outline-primary"><i class="bi bi-eye-fill"></i>View</a> *@
+                                        <a asp-controller="Event" asp-action="UpdateEvent" asp-route-villaId="@evt.EventId" class="btn btn-success"><i class="bi bi-pencil-square"></i></a>
+                                        <a asp-controller="Event" asp-action="DeleteEvent" asp-route-villaId="@evt.EventId" class="btn btn-danger"><i class="bi bi-trash"></i></a>
+                                    </td>
+
                                 </tr>
                             }
                         </tbody>
