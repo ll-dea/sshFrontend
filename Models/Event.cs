@@ -31,4 +31,7 @@ public class Event
     public virtual ICollection<PastryOrder> PastryOrders { get; set; } = new List<PastryOrder>();
 
     public virtual ICollection<VenueOrder> VenueOrders { get; set; } = new List<VenueOrder>();
+    public string ApplicationUserId { get; set; }
+    [ForeignKey("ApplicationUserId")]
+    public ApplicationUser ApplicationUser { get; set; }
 }

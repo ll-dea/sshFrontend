@@ -15,6 +15,9 @@ namespace SSH_FrontEnd.Models.DTOs
 
         public DateTime? EventDate { get; set; }
 
-      
+        public string ApplicationUserId { get; set; }
+        [ForeignKey("ApplicationUserId")]
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }
+

@@ -8,6 +8,16 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/SSH_FrontEnd.styles.css" asp-append-version="true" />
+    @if (User.Identity.IsAuthenticated)
+    {
+        <a asp-controller="Auth" asp-action="Logout">Logout</a>
+    }
+    else
+    {
+        <a asp-controller="Auth" asp-action="Login">Login</a>
+        <a asp-controller="Auth" asp-action="Register">Register</a>
+    }
+
 </head>
 <body>
     <header>

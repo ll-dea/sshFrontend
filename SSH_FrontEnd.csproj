@@ -7,20 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Views\Event\**" />
-    <Content Remove="Views\Event\**" />
-    <EmbeddedResource Remove="Views\Event\**" />
-    <None Remove="Views\Event\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.4.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.10.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Utility\Utility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Admin\" />
   </ItemGroup>
 
 </Project>
