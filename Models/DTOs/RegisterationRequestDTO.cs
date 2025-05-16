@@ -1,4 +1,4 @@
-﻿namespace sshBackend1.Models.DTOs
+﻿namespace SSH_FrontEnd.Models.DTOs
 {
     public class RegisterationRequestDTO
     {
