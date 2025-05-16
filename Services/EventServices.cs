@@ -7,12 +7,11 @@ using Utility;
 
 namespace SSH_FrontEnd.Services
 {
-    public class EventServices: BaseServices, IEventServices
-
+    public class EventServices : BaseServices, IEventServices
     {
         private readonly IHttpClientFactory _clientFactory;
         private string eventUrl;
-        
+
         public EventServices(IHttpClientFactory clientFactory, IConfiguration configuration) : base(clientFactory)
         {
             _clientFactory = clientFactory;
@@ -21,41 +20,44 @@ namespace SSH_FrontEnd.Services
 
         public Task<T> CreateAsync<T>(EventDTO dto)
         {
-            return SendAsync<T>(new APIRequest()
+            return SendAsync<T>(new APIRequest
             {
                 ApiType = SD.ApiType.POST,
                 Data = dto,
-                Url = eventUrl + "/api/Event"
-                
+                Url = eventUrl + "api/Event"
             });
         }
+
         public Task<T> DeleteAsync<T>(int id)
         {
-            return SendAsync<T>(new APIRequest()
+            return SendAsync<T>(new APIRequest
             {
                 ApiType = SD.ApiType.DELETE,
                 Url = eventUrl + "api/Event/" + id
             });
         }
+
         public Task<T> GetAllAsync<T>()
         {
-            return SendAsync<T>(new APIRequest()
+            return SendAsync<T>(new APIRequest
             {
                 ApiType = SD.ApiType.GET,
                 Url = eventUrl + "api/Event"
             });
         }
+
         public Task<T> GetAsync<T>(int id)
         {
-            return SendAsync<T>(new APIRequest()
+            return SendAsync<T>(new APIRequest
             {
                 ApiType = SD.ApiType.GET,
                 Url = eventUrl + "api/Event/" + id
             });
         }
+
         public Task<T> UpdateAsync<T>(EventDTO dto)
         {
-            return SendAsync<T>(new APIRequest()
+            return SendAsync<T>(new APIRequest
             {
                 ApiType = SD.ApiType.PUT,
                 Data = dto,
@@ -63,5 +65,24 @@ namespace SSH_FrontEnd.Services
             });
         }
 
+        // ✅ New: Get all venues
+        public Task<T> GetAllVenuesAsync<T>()
+        {
+            return SendAsync<T>(new APIRequest
+            {
+                ApiType = SD.ApiType.GET,
+                Url = eventUrl + "api/Venue"
+            });
+        }
+
+        // ✅ New: Get all florists
+        public Task<T> GetAllFloristsAsync<T>()
+        {
+            return SendAsync<T>(new APIRequest
+            {
+                ApiType = SD.ApiType.GET,
+                Url = eventUrl + "api/Florist"
+            });
+        }
     }
 }

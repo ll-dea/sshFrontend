@@ -1,0 +1,34 @@
+﻿@using SSH_FrontEnd.VM.EventVM
+@model IEnumerable<MyEventsViewModel>
+@{
+    ViewData["Title"] = "My Events";
+}
+<h2>My Events</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Date</th>
+            <th>Venue</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ev in Model)
+        {
+            <tr>
+                <td>@ev.EventName</td>
+                <td>@ev.EventType</td>
+                <td>@ev.EventDate?.ToShortDateString()</td>
+                <td>@ev.VenueName</td>
+                <td>@ev.Status</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@ev.EventId">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@ev.EventId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

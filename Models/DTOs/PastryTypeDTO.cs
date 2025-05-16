@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace sshBackend1.Models.DTOs
+namespace SSH_FrontEnd.Models.DTOs
 {
     public class PastryTypeDTO
     {
@@ -13,7 +13,6 @@ namespace sshBackend1.Models.DTOs
 
        
 
-        // Fusha për multi-tenancy
-        public string TenantId { get; set; }
+        
     }
 }

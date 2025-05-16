@@ -1,11 +1,12 @@
 ﻿using SSH_FrontEnd.Models;
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SSH_FrontEnd.Models;
 
-public partial class Florist 
+public  class Florist 
 {
     [Key]
     public int FloristId { get; set; }
@@ -22,8 +23,7 @@ public partial class Florist
 
     public int? PartnerStatusId { get; set; }
 
-    // Fusha për multi-tenancy
-    public string TenantId { get; set; }
+  
 
     public virtual ICollection<FlowerArrangement> FlowerArrangements { get; set; } = new List<FlowerArrangement>();
 

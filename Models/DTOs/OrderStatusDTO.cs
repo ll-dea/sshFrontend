@@ -13,7 +13,7 @@ namespace SSH_FrontEnd.Models.DTOs
 
         public string OrderStatusName { get; set; }
 
-        public string TenantId { get; set; }
+       
 
     }
 }

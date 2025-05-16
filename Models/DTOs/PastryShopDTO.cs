@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace sshBackend1.Models.DTOs
+namespace SSH_FrontEnd.Models.DTOs
 {
     public class PastryShopDTO
     {
@@ -16,6 +16,6 @@ namespace sshBackend1.Models.DTOs
         public int? PartnerStatusId { get; set; }
 
     
-        public string TenantId { get; set; }
+        
     }
 }

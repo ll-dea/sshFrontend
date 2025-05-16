@@ -1,7 +1,8 @@
 ﻿using AutoMapper;
-using SSH_FrontEnd.Models.DTOs;
 using SSH_FrontEnd.Models;
-using sshBackend1.Models.DTOs;
+using SSH_FrontEnd.Models.DTOs;
+using SSH_FrontEnd.Models.DTOs;
+
 
 namespace SSH_FrontEnd
 {
@@ -84,10 +85,10 @@ namespace SSH_FrontEnd
           
 
             CreateMap<Guest, GuestDTO>().ReverseMap();
-           
 
-            CreateMap<Users, UsersDTO>().ReverseMap();
-           
+
+            CreateMap<ApplicationUser, ApplicationUserDTO>().ReverseMap();
+
         }
     }
 }

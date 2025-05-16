@@ -1,0 +1,28 @@
+﻿@using SSH_FrontEnd.VM.Client
+@model ClientDashboardViewModel
+@{
+    ViewData["Title"] = "Dashboard";
+}
+<h2>Welcome</h2>
+<p>@Model.WelcomeMessage</p>
+
+<h4>Upcoming Events</h4>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Event</th>
+            <th>Date</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ev in Model.UpcomingEvents)
+        {
+            <tr>
+                <td>@ev.EventName</td>
+                <td>@ev.EventDate?.ToShortDateString()</td>
+                <td>@ev.Status</td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -22,58 +22,54 @@ namespace MagicVilla_Web.Services
             try
             {
                 var client = httpClient.CreateClient("EventPlannerAPI");
-                HttpRequestMessage message = new HttpRequestMessage();
-                message.Headers.Add("Accept", "application/json");
-                message.RequestUri = new Uri(apiRequest.Url);
+                var message = new HttpRequestMessage
+                {
+                    RequestUri = new Uri(apiRequest.Url),
+                    Headers = { { "Accept", "application/json" } },
+                    Method = apiRequest.ApiType switch
+                    {
+                        SD.ApiType.POST => HttpMethod.Post,
+                        SD.ApiType.PUT => HttpMethod.Put,
+                        SD.ApiType.DELETE => HttpMethod.Delete,
+                        _ => HttpMethod.Get
+                    }
+                };
+
                 if (apiRequest.Data != null)
                 {
                     message.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data),
-                                            Encoding.UTF8, "application/json");
+                                        Encoding.UTF8, "application/json");
                 }
 
+                var apiResponse = await client.SendAsync(message);
+                var content = await apiResponse.Content.ReadAsStringAsync();
 
-                switch (apiRequest.ApiType)
+                if (!apiResponse.IsSuccessStatusCode)
                 {
-                    case SD.ApiType.POST:
-                        message.Method = HttpMethod.Post;
-                        break;
-                    case SD.ApiType.PUT:
-                        message.Method = HttpMethod.Put;
-                        break;
-                    case SD.ApiType.DELETE:
-                        message.Method = HttpMethod.Delete;
-                        break;
-                    default:
-                        message.Method = HttpMethod.Get;
-                        break;
-
+                    var error = new APIResponse
+                    {
+                        StatusCode = apiResponse.StatusCode,
+                        IsSuccess = false,
+                        ErrorsMessages = new List<string> { content }
+                    };
+                    return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(error));
                 }
-                HttpResponseMessage apiResponse = null;
-                apiResponse = await client.SendAsync(message);
 
-                var apiContent = await apiResponse.Content.ReadAsStringAsync();
-                var APIResponse = JsonConvert.DeserializeObject<T>(apiContent);
-                return APIResponse;
-
-
+                return JsonConvert.DeserializeObject<T>(content);
             }
             catch (Exception e)
             {
                 var dto = new APIResponse()
                 {
-                    ErrorsMessages = new List<string> { Convert.ToString(e.Message) },
+                    ErrorsMessages = new List<string> { e.Message },
                     IsSuccess = false
                 };
-                var res = JsonConvert.SerializeObject(dto);
-                var APIResponse = JsonConvert.DeserializeObject<T>(res);
-                return APIResponse;
-
-
-
+                return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(dto));
             }
         }
 
-        
+
+
     }
 }
 
