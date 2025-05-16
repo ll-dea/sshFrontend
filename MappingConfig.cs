@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using SSH_FrontEnd.Models.DTOs;
 using SSH_FrontEnd.Models;
-using sshBackend1.Models.DTOs;
+using SSH_FrontEnd.Models.DTOs;
 
 namespace SSH_FrontEnd
 {

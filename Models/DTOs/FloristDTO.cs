@@ -21,7 +21,6 @@ namespace SSH_FrontEnd.Models.DTOs
 
         public int? PartnerStatusId { get; set; }
 
-        // Fusha për multi-tenancy
-        public string TenantId { get; set; }
+      
     }
 }

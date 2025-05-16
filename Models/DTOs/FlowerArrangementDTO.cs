@@ -19,8 +19,7 @@ namespace SSH_FrontEnd.Models.DTOs
 
         public int FlowerArrangementTypeId { get; set; }
 
-        // Fusha për multi-tenancy
-        public string TenantId { get; set; }
+       
 
         
     }

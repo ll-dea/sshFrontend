@@ -12,6 +12,6 @@ namespace SSH_FrontEnd.Models.DTOs
         public string Name { get; set; }
 
       
-        public string TenantId { get; set; }
+      
     }
 }

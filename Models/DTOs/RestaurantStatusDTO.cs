@@ -1,4 +1,4 @@
-﻿namespace sshBackend1.Models.DTOs
+﻿namespace SSH_FrontEnd.Models.DTOs
 {
     public class RestaurantStatusDTO
     {
@@ -7,6 +7,6 @@
         public string Description { get; set; } 
         public DateTime LastUpdated { get; set; } 
 
-        public string TenantId { get; set; }
+       
     }
 }

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace sshBackend1.Models.DTOs
+namespace SSH_FrontEnd.Models.DTOs
 {
     public class GuestDTO
     {
@@ -19,6 +19,6 @@ namespace sshBackend1.Models.DTOs
 
         public int TableId { get; set; }
 
-        public string TenantId { get; set; }
+        
     }
 }

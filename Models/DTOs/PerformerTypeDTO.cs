@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace sshBackend1.Models.DTOs
+namespace SSH_FrontEnd.Models.DTOs
 {
     public class PerformerTypeDTO
     {
@@ -10,6 +10,6 @@ namespace sshBackend1.Models.DTOs
         public string Name { get; set; }
 
 
-        public string TenantId { get; set; }
+        
     }
 }

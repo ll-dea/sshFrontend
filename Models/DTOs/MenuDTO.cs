@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace sshBackend1.Models.DTOs
+namespace SSH_FrontEnd.Models.DTOs
 {
     public class MenuDTO
     {
@@ -16,6 +16,6 @@ namespace sshBackend1.Models.DTOs
         public int? CateringId { get; set; }
 
         public int? MenuTypeId { get; set; }
-        public string TenantId { get; set; }
+        
     }
 }

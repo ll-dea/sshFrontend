@@ -25,7 +25,7 @@ namespace SSH_FrontEnd.Services
             {
                 ApiType = SD.ApiType.POST,
                 Data = dto,
-                Url = eventUrl + "/api/Event"
+                Url = eventUrl + "api/Event"
                 
             });
         }
