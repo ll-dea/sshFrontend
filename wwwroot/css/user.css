@@ -842,7 +842,7 @@ body {
 
 /* per kto tjerat 
 /* ===== Common Booking Cards Styling ===== */
-.restaurant-list,
+
 .venue-list,
 .pastry-list,
 .music-list {
@@ -853,7 +853,7 @@ body {
     margin: 20px 0;
 }
 
-.restaurant-card,
+
 .venue-card,
 .pastry-card,
 .music-card {
@@ -867,14 +867,14 @@ body {
     padding: 10px;
 }
 
-    .restaurant-card:hover,
+   
     .venue-card:hover,
     .pastry-card:hover,
     .music-card:hover {
         transform: scale(1.05);
     }
 
-.restaurant-img,
+
 .venue-img,
 .pastry-img,
 .music-img {
@@ -883,7 +883,7 @@ body {
     object-fit: cover;
 }
 
-.restaurant-info,
+
 .venue-info,
 .pastry-info,
 .music-info {
@@ -891,7 +891,7 @@ body {
     text-align: center;
 }
 
-    .restaurant-info h4,
+  
     .venue-info h4,
     .pastry-info h4,
     .music-info h4 {

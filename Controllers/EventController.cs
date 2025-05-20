@@ -18,18 +18,18 @@ public class EventController : Controller
     private readonly IFloristService _floristService;
     private readonly IMapper _mapper;
     private readonly IMusicProviderService _musicService;
-    private readonly IRestaurantService _restaurantService;
+   
     private readonly IPastryService _pastryService;
 
 
-    public EventController(IEventServices eventService, IVenueService venueService, IFloristService floristService, IMapper mapper, IMusicProviderService musicProviderService, IRestaurantService restaurantService, IPastryService pastryService)
+    public EventController(IEventServices eventService, IVenueService venueService, IFloristService floristService, IMapper mapper, IMusicProviderService musicProviderService,  IPastryService pastryService)
     {
         _eventService = eventService;
         _venueService = venueService;
         _floristService = floristService;
         _mapper = mapper;
         _musicService = musicProviderService;
-        _restaurantService = restaurantService;
+      
         _pastryService = pastryService;
     }
 
@@ -63,7 +63,7 @@ public class EventController : Controller
             Venues = await LoadSelectListAsync<Venue>(_venueService),
             Florists = await LoadSelectListAsync<Florist>(_floristService),
             MusicProviders = await LoadSelectListAsync<MusicProvider>(_musicService),
-            Restaurants = await LoadSelectListAsync<Restaurant>(_restaurantService),
+           
             Pastries = await LoadSelectListAsync<Pastry>(_pastryService)
 
         };

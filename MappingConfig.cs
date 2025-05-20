@@ -39,14 +39,6 @@ namespace SSH_FrontEnd
 
             CreateMap<FlowerArrangement, FlowerArrangementDTO>().ReverseMap();
         
-
-            CreateMap<RestaurantStatus, RestaurantStatusDTO>().ReverseMap();
-           
-
-            CreateMap<Restaurant, RestaurantDTO>().ReverseMap();
-           
-
-            CreateMap<Table, TableDTO>().ReverseMap();
            
 
             CreateMap<PerformerType, PerformerTypeDTO>().ReverseMap();

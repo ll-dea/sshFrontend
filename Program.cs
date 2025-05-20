@@ -23,7 +23,7 @@ builder.Services.AddScoped<IVenueService, VenueService>();
 builder.Services.AddScoped<IFloristService, FloristService>();
 
 builder.Services.AddScoped<IMusicProviderService, MusicProviderService>();
-builder.Services.AddScoped<IRestaurantService, RestaurantService>();
+
 builder.Services.AddScoped<IPastryService, PastryService>();
 
 
