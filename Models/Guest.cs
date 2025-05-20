@@ -24,7 +24,7 @@ public partial class Guest
     public virtual Event Event { get; set; }
 
 
-    public virtual Table Table { get; set; }
+   
 
 
 }
