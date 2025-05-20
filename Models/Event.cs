@@ -6,11 +6,9 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SSH_FrontEnd.Models;
-
 public class Event 
 {
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int EventId { get; set; }
 
     public string EventName { get; set; }
@@ -22,7 +20,7 @@ public class Event
 
     public virtual ICollection<FlowerArrangementOrder> FlowerArrangementOrders { get; set; } = new List<FlowerArrangementOrder>();
 
-    public virtual ICollection<Guest> Guests { get; set; } = new List<Guest>();
+    //public virtual ICollection<Guest> Guests { get; set; } = new List<Guest>();
 
     public virtual ICollection<MenuOrder> MenuOrders { get; set; } = new List<MenuOrder>();
 

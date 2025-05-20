@@ -1,11 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace SSH_FrontEnd.Models
+namespace SSH_FrontEnd.Models;
+
+public class Roles
 {
-    public class Roles
-    {
-        [Key]
-        public int RoleId { get; set; }
-        public string RoleName { get; set; }
-    }
+    [Key]
+    public int RoleId { get; set; }
+    public string RoleName { get; set; }
 }

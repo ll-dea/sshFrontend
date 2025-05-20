@@ -31,6 +31,7 @@ namespace SSH_FrontEnd.VM.EventVM
         public IEnumerable<SelectListItem> MusicProviders { get; set; }
        
         public IEnumerable<SelectListItem> Pastries { get; set; }
+        public IEnumerable<SelectListItem> Menues { get; set; }
     }
 
 }

@@ -1,9 +1,7 @@
 ﻿
-using SSH_FrontEnd.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
 namespace SSH_FrontEnd.Models;
 
 public partial class PerformerType

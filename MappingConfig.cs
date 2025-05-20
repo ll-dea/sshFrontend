@@ -77,7 +77,7 @@ namespace SSH_FrontEnd
             CreateMap<PastryType, PastryTypeDTO>().ReverseMap();
           
 
-            CreateMap<Guest, GuestDTO>().ReverseMap();
+       
 
 
             CreateMap<ApplicationUser, ApplicationUserDTO>().ReverseMap();

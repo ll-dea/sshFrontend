@@ -1,20 +1,17 @@
 ﻿
-using SSH_FrontEnd.Models;
 using SSH_FrontEnd.Models.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
 namespace SSH_FrontEnd.Models;
 
 
-public partial class MusicProvider: IHasIdAndName
+public partial class MusicProvider : IHasIdAndName
 {
     [Key]
     public int MusicProviderId { get; set; }
 
     public int Id => MusicProviderId;
-
     public string Name { get; set; }
 
    
@@ -37,7 +34,6 @@ public partial class MusicProvider: IHasIdAndName
 
   
     public decimal? BaseHourlyRate { get; set; }
-    
 
 
     public virtual PartnerStatus PartnerStatus { get; set; }

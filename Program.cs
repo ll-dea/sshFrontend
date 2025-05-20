@@ -25,6 +25,27 @@ builder.Services.AddScoped<IFloristService, FloristService>();
 builder.Services.AddScoped<IMusicProviderService, MusicProviderService>();
 
 builder.Services.AddScoped<IPastryService, PastryService>();
+builder.Services.AddScoped<IMenuService, MenuServices>();
+builder.Services.AddScoped<IVenueTypeService, VenueTypeService>();
+builder.Services.AddScoped<IVenueProviderService, VenueProviderService>();
+builder.Services.AddScoped<IFlowerArrangmentService, FloristArrangmentService>();
+builder.Services.AddScoped<IOrderStatusService, OrderStatusService>();
+builder.Services.AddScoped<IMusicProviderOrderService, MusicProviderOrderServices>();
+builder.Services.AddScoped<IFlowerArrangmentOrderService, FlowerArrangementOrderService>();
+builder.Services.AddScoped<IVenueOrderService, VenueOrderService>();
+builder.Services.AddScoped<IMenuOrderService, MenuOrderService>();
+builder.Services.AddScoped<IFlowerArrangmentTypeService, FlowerArrangmentTypeService>();
+builder.Services.AddScoped<IPerformerTypeService, PerformerTypeService>();
+builder.Services.AddScoped<IMenuTypeService, MenuTypeService>();
+builder.Services.AddScoped<IPartnerStatusService, PartnerStatusService>();
+builder.Services.AddScoped<IPastryService, PastryService>();
+builder.Services.AddScoped<IPastryShopService, PastryShopService>();
+builder.Services.AddScoped<IPastryTypeService, PastryTypeService>();
+builder.Services.AddScoped<IPlaylistItemService, PlaylistItemService>();
+
+
+
+
 
 
 
