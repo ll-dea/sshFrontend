@@ -3,10 +3,11 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using SSH_FrontEnd.Models.Common;
 
 namespace SSH_FrontEnd.Models;
 
-public  class Florist 
+public  class Florist : IHasIdAndName
 {
     [Key]
     public int FloristId { get; set; }
@@ -22,8 +23,9 @@ public  class Florist
     public decimal? AgencyFee { get; set; }
 
     public int? PartnerStatusId { get; set; }
+    public int Id => FloristId;
 
-  
+
 
     public virtual ICollection<FlowerArrangement> FlowerArrangements { get; set; } = new List<FlowerArrangement>();
 

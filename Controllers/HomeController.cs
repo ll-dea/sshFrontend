@@ -1,31 +1,33 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using SSH_FrontEnd.Models;
-
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 namespace SSH_FrontEnd.Controllers;
+
+
 
 public class HomeController : Controller
 {
-    private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
-    {
-        _logger = logger;
-    }
-
     public IActionResult Index()
     {
-        return View();
-    }
+        if (!User.Identity.IsAuthenticated)
+        {
+            return RedirectToAction("Login", "Auth");
+        }
 
-    public IActionResult Privacy()
-    {
-        return View();
-    }
+        var role = User.FindFirst(ClaimTypes.Role)?.Value?.ToLower();
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error()
-    {
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        if (role == "admin")
+        {
+            return RedirectToAction("Dashboard", "Admin");
+        }
+        else if (role == "client")
+        {
+            return RedirectToAction("Dashboard", "Client");
+        }
+
+        return RedirectToAction("Login", "Auth"); // fallback
     }
 }
+

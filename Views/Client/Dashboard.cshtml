@@ -1,28 +1,66 @@
 ﻿@using SSH_FrontEnd.VM.Client
 @model ClientDashboardViewModel
+
 @{
     ViewData["Title"] = "Dashboard";
-}
-<h2>Welcome</h2>
-<p>@Model.WelcomeMessage</p>
 
-<h4>Upcoming Events</h4>
-<table class="table">
-    <thead>
-        <tr>
-            <th>Event</th>
-            <th>Date</th>
-            <th>Status</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var ev in Model.UpcomingEvents)
-        {
-            <tr>
-                <td>@ev.EventName</td>
-                <td>@ev.EventDate?.ToShortDateString()</td>
-                <td>@ev.Status</td>
-            </tr>
-        }
-    </tbody>
-</table>
+    var upcoming = Model.UpcomingEvents?
+        .Where(e => e.EventDate != null && e.EventDate.Value.Date >= DateTime.Today)
+        .OrderBy(e => e.EventDate)
+        .ToList();
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <div>
+            <h2 class="display-6">Welcome 👋</h2>
+            <p class="text-muted fw-light">@Model.WelcomeMessage</p>
+        </div>
+        <div>
+            <a asp-controller="Client" asp-action="Profile" class="btn btn-outline-secondary me-2">
+                <i class="bi bi-person-circle"></i> My Profile
+            </a>
+            <a asp-controller="Event" asp-action="Create" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Create Event
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="bi bi-calendar-event"></i> Upcoming Events</h5>
+        </div>
+        <div class="card-body">
+            @if (upcoming != null && upcoming.Any())
+            {
+                <table class="table table-striped table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>📌 Event</th>
+                            <th>📅 Date</th>
+                            <th>📊 Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ev in upcoming)
+                        {
+                            <tr>
+                                <td>@ev.EventName</td>
+                                <td>@ev.EventDate?.ToShortDateString()</td>
+                                <td>
+                                    <span class="badge bg-info text-dark">@ev.Status</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="alert alert-info text-center mb-0" role="alert">
+                    You don't have any upcoming events. <a asp-controller="Event" asp-action="Create" class="alert-link">Create your first event</a>.
+                </div>
+            }
+        </div>
+    </div>
+</div>

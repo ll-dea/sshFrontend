@@ -1,29 +1,68 @@
 ﻿@using SSH_FrontEnd.VM.EventVM
 @model EventCreateVM
+
 @{
     ViewData["Title"] = "Create Event";
 }
-<h2>Create New Event</h2>
-<form asp-action="Create" method="post">
-    <div class="form-group">
-        <label asp-for="EventName"></label>
-        <input asp-for="EventName" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="EventType"></label>
-        <input asp-for="EventType" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="EventDate"></label>
-        <input asp-for="EventDate" type="date" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label>Venue</label>
-        <select asp-for="SelectedVenueId" asp-items="Model.Venues" class="form-control"></select>
-    </div>
-    <div class="form-group">
-        <label>Florist</label>
-        <select asp-for="SelectedFloristId" asp-items="Model.Florists" class="form-control"></select>
-    </div>
-    <button type="submit" class="btn btn-primary">Create</button>
-</form>
+
+<div class="container mt-4">
+    <h2 class="mb-4">🎉 Plan Your Event</h2>
+
+    <form asp-action="Create" method="post" class="row g-3">
+        <div class="col-md-6">
+            <label asp-for="EventName" class="form-label">Event Name</label>
+            <input asp-for="EventName" class="form-control" placeholder="e.g. John's Birthday" />
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="EventType" class="form-label">Event Type</label>
+            <input asp-for="EventType" class="form-control" placeholder="e.g. Birthday, Wedding" />
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="EventDate" class="form-label">Event Date</label>
+            <input asp-for="EventDate" type="date" class="form-control" />
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Venue</label>
+            <select asp-for="SelectedVenueId" asp-items="Model.Venues" class="form-select">
+                <option value="">-- Select Venue --</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Florist</label>
+            <select asp-for="SelectedFloristId" asp-items="Model.Florists" class="form-select">
+                <option value="">-- Select Florist --</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Music Provider</label>
+            <select asp-for="SelectedMusicProviderId" asp-items="Model.MusicProviders" class="form-select">
+                <option value="">-- Select Music --</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Restaurant</label>
+            <select asp-for="SelectedRestaurantId" asp-items="Model.Restaurants" class="form-select">
+                <option value="">-- Select Restaurant --</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label class="form-label">Pastry</label>
+            <select asp-for="SelectedPastryId" asp-items="Model.Pastries" class="form-select">
+                <option value="">-- Select Pastry --</option>
+            </select>
+        </div>
+
+        <div class="col-12 mt-4">
+            <button type="submit" class="btn btn-primary w-100">
+                <i class="bi bi-check-circle-fill"></i> Create Event
+            </button>
+        </div>
+    </form>
+</div>

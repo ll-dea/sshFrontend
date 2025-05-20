@@ -2,13 +2,12 @@
 
 namespace SSH_FrontEnd.Services.IServices
 {
-    public interface IFloristService : IBaseServices
+    public interface IRestaurantService : IBaseServices
     {
         Task<T> GetAllAsync<T>();
         Task<T> GetAsync<T>(int id);
-        Task<T> CreateAsync<T>(Florist dto);
-        Task<T> UpdateAsync<T>(Florist dto);
+        Task<T> CreateAsync<T>(Restaurant dto);
+        Task<T> UpdateAsync<T>(Restaurant dto);
         Task<T> DeleteAsync<T>(int id);
-
     }
 }

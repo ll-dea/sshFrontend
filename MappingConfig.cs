@@ -2,6 +2,7 @@
 using SSH_FrontEnd.Models;
 using SSH_FrontEnd.Models.DTOs;
 using SSH_FrontEnd.Models.DTOs;
+using SSH_FrontEnd.VM.EventVM;
 
 
 namespace SSH_FrontEnd
@@ -88,6 +89,9 @@ namespace SSH_FrontEnd
 
 
             CreateMap<ApplicationUser, ApplicationUserDTO>().ReverseMap();
+
+            CreateMap<EventDTO, MyEventsViewModel>().ReverseMap();
+
 
         }
     }

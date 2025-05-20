@@ -6,6 +6,6 @@ namespace SSH_FrontEnd.Services.IServices
     {
         APIResponse responseModel { get; set; }
         Task<T> SendAsync<T>(APIRequest apiRequest);
-
+        Task<T> GetAllAsync<T>();
     }
 }
