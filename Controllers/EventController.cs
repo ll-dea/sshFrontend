@@ -56,7 +56,8 @@ public class EventController : Controller
 
 
     [HttpGet]
-    
+
+    [HttpGet]
     public async Task<IActionResult> Create()
     {
         var model = new EventCreateVM
@@ -64,24 +65,24 @@ public class EventController : Controller
             Venues = await LoadSelectListAsync<Venue>(_venueService),
             Florists = await LoadSelectListAsync<Florist>(_floristService),
             MusicProviders = await LoadSelectListAsync<MusicProvider>(_musicService),
-            Menues = await LoadSelectListAsync<Menu>(_menuService),
-           
+            Menues = await LoadMenusAsync(),
             Pastries = await LoadSelectListAsync<Pastry>(_pastryService)
-
         };
 
         return View("CreateEvent", model);
     }
-
 
     [HttpPost]
     public async Task<IActionResult> Create(EventCreateVM model)
     {
         if (!ModelState.IsValid)
         {
-            model.Venues = await LoadVenuesAsync();
-            model.Florists = await LoadFloristsAsync();
-           
+            model.Venues = await LoadSelectListAsync<Venue>(_venueService);
+            model.Florists = await LoadSelectListAsync<Florist>(_floristService);
+            model.MusicProviders = await LoadSelectListAsync<MusicProvider>(_musicService);
+            model.Menues = await LoadMenusAsync();
+            model.Pastries = await LoadSelectListAsync<Pastry>(_pastryService);
+
             return View("CreateEvent", model);
         }
 
@@ -100,38 +101,45 @@ public class EventController : Controller
         }
 
         ModelState.AddModelError("", "Failed to create event.");
-        model.Venues = await LoadVenuesAsync();
-        model.Florists = await LoadFloristsAsync();
+
+        // Reload dropdowns again
+        model.Venues = await LoadSelectListAsync<Venue>(_venueService);
+        model.Florists = await LoadSelectListAsync<Florist>(_floristService);
+        model.MusicProviders = await LoadSelectListAsync<MusicProvider>(_musicService);
+        model.Menues = await LoadMenusAsync();
+        model.Pastries = await LoadSelectListAsync<Pastry>(_pastryService);
+
         return View("CreateEvent", model);
     }
 
-    private async Task<IEnumerable<SelectListItem>> LoadVenuesAsync()
-    {
-        var apiResponse = await _venueService.GetAllAsync<APIResponse>();
 
-        if (apiResponse.IsSuccess && apiResponse.Result is not null)
-        {
-            var json = JsonConvert.SerializeObject(apiResponse.Result);
-            var venues = JsonConvert.DeserializeObject<List<Venue>>(json);
-            return venues.Select(v => new SelectListItem { Value = v.VenueId.ToString(), Text = v.Name });
-        }
+    //private async Task<IEnumerable<SelectListItem>> LoadVenuesAsync()
+    //{
+    //    var apiResponse = await _venueService.GetAllAsync<APIResponse>();
 
-        return Enumerable.Empty<SelectListItem>();
-    }
+    //    if (apiResponse.IsSuccess && apiResponse.Result is not null)
+    //    {
+    //        var json = JsonConvert.SerializeObject(apiResponse.Result);
+    //        var venues = JsonConvert.DeserializeObject<List<Venue>>(json);
+    //        return venues.Select(v => new SelectListItem { Value = v.VenueId.ToString(), Text = v.Name });
+    //    }
 
-    private async Task<IEnumerable<SelectListItem>> LoadFloristsAsync()
-    {
-        var apiResponse = await _floristService.GetAllAsync<APIResponse>();
+    //    return Enumerable.Empty<SelectListItem>();
+    //}
 
-        if (apiResponse.IsSuccess && apiResponse.Result is not null)
-        {
-            var json = JsonConvert.SerializeObject(apiResponse.Result);
-            var florists = JsonConvert.DeserializeObject<List<Florist>>(json);
-            return florists.Select(f => new SelectListItem { Value = f.FloristId.ToString(), Text = f.Name });
-        }
+    //private async Task<IEnumerable<SelectListItem>> LoadFloristsAsync()
+    //{
+    //    var apiResponse = await _floristService.GetAllAsync<APIResponse>();
 
-        return Enumerable.Empty<SelectListItem>();
-    }
+    //    if (apiResponse.IsSuccess && apiResponse.Result is not null)
+    //    {
+    //        var json = JsonConvert.SerializeObject(apiResponse.Result);
+    //        var florists = JsonConvert.DeserializeObject<List<Florist>>(json);
+    //        return florists.Select(f => new SelectListItem { Value = f.FloristId.ToString(), Text = f.Name });
+    //    }
+
+    //    return Enumerable.Empty<SelectListItem>();
+    //}
 
     private async Task<IEnumerable<SelectListItem>> LoadSelectListAsync<TModel>(IBaseServices service)
     where TModel : class, IHasIdAndName
@@ -148,6 +156,19 @@ public class EventController : Controller
                 Value = item.Id.ToString(),
                 Text = item.Name
             });
+        }
+
+        return Enumerable.Empty<SelectListItem>();
+    }
+    private async Task<IEnumerable<SelectListItem>> LoadMenusAsync()
+    {
+        var apiResponse = await _menuService.GetAllAsync<APIResponse>();
+
+        if (apiResponse.IsSuccess && apiResponse.Result is not null)
+        {
+            var json = JsonConvert.SerializeObject(apiResponse.Result);
+            var menus = JsonConvert.DeserializeObject<List<Menu>>(json);
+            return menus.Select(f => new SelectListItem { Value = f.MenuId.ToString(), Text = f.Name });
         }
 
         return Enumerable.Empty<SelectListItem>();

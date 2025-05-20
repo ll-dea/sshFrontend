@@ -1,17 +1,19 @@
 ﻿
 
+using SSH_FrontEnd.Models.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SSH_FrontEnd.Models;
 
-public partial class MusicProviderOrder
+public partial class MusicProviderOrder: IHasIdAndName
 {
     [Key]
     public int MusicProviderOrderId { get; set; }
+    public int Id => MusicProviderOrderId;
 
-    public string OrderName { get; set; }
+    public string Name { get; set; }
 
     public decimal OrderPrice { get; set; }
 

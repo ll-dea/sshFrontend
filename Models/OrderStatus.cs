@@ -1,16 +1,20 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
+using SSH_FrontEnd.Models.Common;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 namespace SSH_FrontEnd.Models;
 
-public partial class OrderStatus
+public partial class OrderStatus: IHasIdAndName
 {
     [Key]
     public int OrderStatusId { get; set; }
-
-    public string OrderStatusName { get; set; }
+    public int Id => OrderStatusId;
+    public string Name { get; set; }
 
     public virtual ICollection<FlowerArrangementOrder> FlowerArrangementOrders { get; set; } = new List<FlowerArrangementOrder>();
 
-
+ 
 
     public virtual ICollection<MenuOrder> MenuOrders { get; set; } = new List<MenuOrder>();
 

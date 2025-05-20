@@ -1,11 +1,11 @@
-﻿using SSH_FrontEnd.Models;
-
+﻿
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SSH_FrontEnd.Models;
+
 public class Event 
 {
     [Key]

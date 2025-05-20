@@ -14,7 +14,7 @@ namespace SSH_FrontEnd.Services
         public PastryService(IHttpClientFactory clientFactory, IConfiguration configuration) : base(clientFactory)
         {
             _clientFactory = clientFactory;
-            _url = configuration["ServicesUrls:EventPlannerAPI"] + "api/PastryShop";
+            _url = configuration["ServicesUrls:EventPlannerAPI"] + "api/Pastry";
         }
 
         public Task<T> GetAllAsync<T>()

@@ -49,29 +49,21 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="floristModalLabel">Available Florists</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title">Available Florists</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
             </div>
             <div class="modal-body">
                 <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Price</th>
-                            <th></th>
-                        </tr>
-                    </thead>
+                    <thead><tr><th>Name</th><th>Type</th><th>Price</th><th></th></tr></thead>
                     <tbody>
-                        @* Loop through Model.Florists or a ViewBag list if passed separately *@
-                        @foreach (var florist in Model.Florists)
+                        @foreach (var florist in Model.FloristItems)
                         {
                             <tr>
-                                <td>@florist.Text</td>
-                                <td>TypePlaceholder</td>
-                                <td>$PricePlaceholder</td>
+                                <td>@florist.Name</td>
+                                <td>@florist.PartnerStatusId</td>
+                                <td></td> 
                                 <td>
-                                    <button type="button" class="btn btn-success" onclick="confirmBooking('Florist')">Book</button>
+                                    <button class="btn btn-success" onclick="confirmBooking('Florist')">Book</button>
                                 </td>
                             </tr>
                         }
@@ -81,6 +73,8 @@
         </div>
     </div>
 </div>
+
+<!-- Menu Modal -->
 <div class="modal fade" id="menuModal" tabindex="-1" aria-labelledby="menuModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -99,12 +93,12 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var menu in Model.Menues)
+                        @foreach (var menu in Model.MenuItems)
                         {
                             <tr>
-                                <td>@menu.Text</td>
-                                <td>TypePlaceholder</td>
-                                <td>$PricePlaceholder</td>
+                                <td>@menu.Name</td>
+                                <td>@menu.MenuTypeId</td>
+                                <td>$@menu.Price</td>
                                 <td>
                                     <button type="button" class="btn btn-success" onclick="confirmBooking('Menu')">Book</button>
                                 </td>
@@ -116,6 +110,7 @@
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="musicModal" tabindex="-1" aria-labelledby="musicModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">

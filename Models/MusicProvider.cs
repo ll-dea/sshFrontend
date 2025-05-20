@@ -1,4 +1,5 @@
 ﻿
+
 using SSH_FrontEnd.Models.Common;
 using System;
 using System.Collections.Generic;
@@ -6,7 +7,7 @@ using System.ComponentModel.DataAnnotations;
 namespace SSH_FrontEnd.Models;
 
 
-public partial class MusicProvider : IHasIdAndName
+public partial class MusicProvider: IHasIdAndName
 {
     [Key]
     public int MusicProviderId { get; set; }

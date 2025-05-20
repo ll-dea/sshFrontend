@@ -1,5 +1,5 @@
 ﻿
-using SSH_FrontEnd.Models;
+
 using SSH_FrontEnd.Models.Common;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ public partial class Menu : IHasIdAndName
 
     public decimal Price { get; set; }
 
-    public int? CateringId { get; set; }
+ 
 
     public int? MenuTypeId { get; set; }
 

@@ -1,8 +1,9 @@
 ﻿// ViewModels/EventCreateViewModel.cs
+using Microsoft.AspNetCore.Mvc.Rendering;
+using SSH_FrontEnd.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.Rendering;
 namespace SSH_FrontEnd.VM.EventVM
 {
    
@@ -18,12 +19,7 @@ namespace SSH_FrontEnd.VM.EventVM
         [Required]
         public DateTime EventDate { get; set; }
 
-        // Selected IDs
-        public int SelectedVenueId { get; set; }
-        public int SelectedFloristId { get; set; }
-        public int SelectedMusicProviderId { get; set; }
-      
-        public int SelectedPastryId { get; set; }
+        
 
         // Dropdown Lists
         public IEnumerable<SelectListItem> Venues { get; set; }
@@ -32,6 +28,12 @@ namespace SSH_FrontEnd.VM.EventVM
        
         public IEnumerable<SelectListItem> Pastries { get; set; }
         public IEnumerable<SelectListItem> Menues { get; set; }
+        public List<Florist> FloristItems { get; set; }
+        public List<Menu> MenuItems { get; set; }
+        public List<MusicProvider> MusicProviderItems { get; set; }
+        public List<Venue> VenueItems { get; set; }
+        public List<Pastry> PastryItems { get; set; }
+
     }
 
 }

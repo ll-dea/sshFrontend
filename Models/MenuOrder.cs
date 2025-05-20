@@ -1,17 +1,17 @@
 ﻿
-
+using SSH_FrontEnd.Models.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
 namespace SSH_FrontEnd.Models;
 
-public partial class MenuOrder
+public partial class MenuOrder: IHasIdAndName
 {
     [Key]
     public int MenuOrderId { get; set; }
+    public int Id => MenuOrderId;
 
-    public string OrderName { get; set; }
+    public string Name { get; set; }
 
     public decimal OrderPrice { get; set; }
 

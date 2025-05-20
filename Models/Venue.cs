@@ -5,10 +5,10 @@ using System.Collections.Generic;
 
 namespace SSH_FrontEnd.Models;
 
-public class Venue : IHasIdAndName
+public class Venue: IHasIdAndName
 {
     public int VenueId { get; set; }
-    public int Id =>VenueId;
+    public int Id => VenueId;
 
     public string Name { get; set; }
 

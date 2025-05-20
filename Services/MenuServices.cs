@@ -14,7 +14,7 @@ namespace SSH_FrontEnd.Services
         public MenuServices(IHttpClientFactory clientFactory, IConfiguration configuration) : base(clientFactory)
         {
             _clientFactory = clientFactory;
-            _url = configuration["ServicesUrls:EventPlannerAPI"] + "api/Menus";
+            _url = configuration["ServicesUrls:EventPlannerAPI"] + "api/Menu";
         }
 
         public Task<T> GetAllAsync<T>()

@@ -1,15 +1,15 @@
-﻿using SSH_FrontEnd.Models;
+﻿
 using SSH_FrontEnd.Models.Common;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SSH_FrontEnd.Models;
-public  class Florist : IHasIdAndName
+
+public partial class Florist: IHasIdAndName
 {
     [Key]
     public int FloristId { get; set; }
-
     public int Id => FloristId;
 
     public string Name { get; set; }
