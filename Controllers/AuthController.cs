@@ -47,29 +47,34 @@ namespace SSH_FrontEnd.Controllers
 
             if (response != null && response.IsSuccess && response.Result is not null)
             {
-                // Extract JWT from response
+                
                 var json = JsonConvert.SerializeObject(response.Result);
                 var loginResponse = JsonConvert.DeserializeObject<LoginResponseDTO>(json);
                 var handler = new JwtSecurityTokenHandler();
                 var token = handler.ReadJwtToken(loginResponse.Token);
 
-                // Extract and normalize claims
                 var claims = token.Claims.ToList();
 
-                // Normalize "role" -> ClaimTypes.Role
-                var roleClaim = claims.FirstOrDefault(c => c.Type == "role")?.Value;
-                if (!string.IsNullOrEmpty(roleClaim))
+                var role = claims.FirstOrDefault(c => c.Type == "role")?.Value;
+                if (!string.IsNullOrEmpty(role))
                 {
-                    claims.Add(new Claim(ClaimTypes.Role, roleClaim));
+                    claims.Add(new Claim(ClaimTypes.Role, role.ToLower()));
                 }
+
+            
+                var userId = claims.FirstOrDefault(c => c.Type == "sub" || c.Type == "id")?.Value;
+                if (!string.IsNullOrEmpty(userId))
+                {
+                    claims.Add(new Claim(ClaimTypes.NameIdentifier, userId));
+                }
+
 
                 var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                 var principal = new ClaimsPrincipal(identity);
 
-                // Sign in the user
+             
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-                // Redirect based on role
                 var userRole = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value?.ToLower();
 
                 if (userRole == "admin")
@@ -77,7 +82,7 @@ namespace SSH_FrontEnd.Controllers
                 else if (userRole == "client")
                     return RedirectToAction("Dashboard", "Client");
 
-                return RedirectToAction("Index", "Home"); // fallback
+                return RedirectToAction("Index", "Home"); 
             }
 
             ModelState.AddModelError("", "Invalid login attempt.");

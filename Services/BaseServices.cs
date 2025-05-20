@@ -68,6 +68,10 @@ namespace MagicVilla_Web.Services
             }
         }
 
+        public virtual Task<T> GetAllAsync<T>()
+        {
+            throw new NotImplementedException("GetAllAsync must be implemented in derived services.");
+        }
 
 
     }

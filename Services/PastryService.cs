@@ -2,16 +2,18 @@
 using SSH_FrontEnd.Models;
 using SSH_FrontEnd.Services.IServices;
 using Utility;
-namespace SSH_FrontEnd.Services { 
-    public class VenueService : BaseServices, IVenueService
+
+namespace SSH_FrontEnd.Services
+{
+    public class PastryService : BaseServices, IPastryService
     {
         private readonly IHttpClientFactory _clientFactory;
         private readonly string _url;
 
-        public VenueService(IHttpClientFactory clientFactory, IConfiguration configuration) : base(clientFactory)
+        public PastryService(IHttpClientFactory clientFactory, IConfiguration configuration) : base(clientFactory)
         {
             _clientFactory = clientFactory;
-            _url = configuration["ServicesUrls:EventPlannerAPI"] + "api/Venue";
+            _url = configuration["ServicesUrls:EventPlannerAPI"] + "api/Pastry";
         }
 
         public Task<T> GetAllAsync<T>()
@@ -24,20 +26,19 @@ namespace SSH_FrontEnd.Services {
             return SendAsync<T>(new APIRequest { ApiType = SD.ApiType.GET, Url = $"{_url}/{id}" });
         }
 
-        public Task<T> CreateAsync<T>(Venue dto)
+        public Task<T> CreateAsync<T>(Pastry dto)
         {
             return SendAsync<T>(new APIRequest { ApiType = SD.ApiType.POST, Data = dto, Url = _url });
         }
 
-        public Task<T> UpdateAsync<T>(Venue dto)
+        public Task<T> UpdateAsync<T>(Pastry dto)
         {
-            return SendAsync<T>(new APIRequest { ApiType = SD.ApiType.PUT, Data = dto, Url = $"{_url}/{dto.VenueId}" });
+            return SendAsync<T>(new APIRequest { ApiType = SD.ApiType.PUT, Data = dto, Url = $"{_url}/{dto.PastryId}" });
         }
 
         public Task<T> DeleteAsync<T>(int id)
         {
             return SendAsync<T>(new APIRequest { ApiType = SD.ApiType.DELETE, Url = $"{_url}/{id}" });
         }
-
     }
 }

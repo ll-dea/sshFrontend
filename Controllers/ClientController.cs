@@ -8,7 +8,7 @@ using SSH_FrontEnd.VM.Client;
 using SSH_FrontEnd.VM.EventVM;
 using System.Security.Claims;
 
-[Authorize(Roles = "CLIENT")] 
+[Authorize(Roles = "client")] 
 public class ClientController : Controller
 {
     private readonly IEventServices _eventService;
@@ -35,7 +35,7 @@ public class ClientController : Controller
             var json = JsonConvert.SerializeObject(response.Result);
             var events = JsonConvert.DeserializeObject<List<EventDTO>>(json);
 
-            // ✅ Filter by ApplicationUserId
+            
             var userEvents = events
                 .Where(e => e.ApplicationUserId == userId)
                 .ToList();
@@ -46,8 +46,8 @@ public class ClientController : Controller
                 EventName = e.EventName,
                 EventType = e.EventType,
                 EventDate = e.EventDate,
-                VenueName = "TBD",     // Replace when venue info is added
-                Status = "Scheduled"   // Replace if you track real status
+                VenueName = "TBD",     
+                Status = "Scheduled"   
             }).ToList();
         }
 

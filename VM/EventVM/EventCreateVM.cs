@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
 namespace SSH_FrontEnd.VM.EventVM
 {
+   
+
     public class EventCreateVM
     {
         [Required]
@@ -16,10 +18,19 @@ namespace SSH_FrontEnd.VM.EventVM
         [Required]
         public DateTime EventDate { get; set; }
 
+        // Selected IDs
         public int SelectedVenueId { get; set; }
         public int SelectedFloristId { get; set; }
+        public int SelectedMusicProviderId { get; set; }
+        public int SelectedRestaurantId { get; set; }
+        public int SelectedPastryId { get; set; }
 
+        // Dropdown Lists
         public IEnumerable<SelectListItem> Venues { get; set; }
         public IEnumerable<SelectListItem> Florists { get; set; }
+        public IEnumerable<SelectListItem> MusicProviders { get; set; }
+        public IEnumerable<SelectListItem> Restaurants { get; set; }
+        public IEnumerable<SelectListItem> Pastries { get; set; }
     }
+
 }

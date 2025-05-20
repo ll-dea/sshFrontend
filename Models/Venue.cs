@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using SSH_FrontEnd.Models;
+using SSH_FrontEnd.Models.Common;
 
 namespace SSH_FrontEnd.Models;
 
-public partial class Venue
+public partial class Venue : IHasIdAndName
 {
     public int VenueId { get; set; }
+    public int Id => VenueId;
+
 
     public string Name { get; set; }
 

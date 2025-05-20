@@ -19,6 +19,14 @@ builder.Services.AddHttpClient("EventPlannerAPI", client =>
 // Register services
 builder.Services.AddScoped<IEventServices, EventServices>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IVenueService, VenueService>();
+builder.Services.AddScoped<IFloristService, FloristService>();
+
+builder.Services.AddScoped<IMusicProviderService, MusicProviderService>();
+builder.Services.AddScoped<IRestaurantService, RestaurantService>();
+builder.Services.AddScoped<IPastryService, PastryService>();
+
+
 
 // Auth setup
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
