@@ -42,6 +42,8 @@ builder.Services.AddScoped<IPastryService, PastryService>();
 builder.Services.AddScoped<IPastryShopService, PastryShopService>();
 builder.Services.AddScoped<IPastryTypeService, PastryTypeService>();
 builder.Services.AddScoped<IPlaylistItemService, PlaylistItemService>();
+builder.Services.AddScoped<IPastryOrderService, PastryOrderService>();
+
 
 
 

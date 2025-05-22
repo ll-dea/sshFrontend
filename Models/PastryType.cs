@@ -14,7 +14,7 @@ public partial class PastryType: IHasIdAndName
     public int Id => PastryTypeId;
     public string Name { get; set; }
 
-    public virtual ICollection<Pastry> Pastries { get; set; } = new List<Pastry>();
+    public virtual ICollection<Pastry> Pastry { get; set; } = new List<Pastry>();
 
 
 }

@@ -15,7 +15,8 @@ namespace SSH_FrontEnd.Models.DTOs
 
         public int? PartnerStatusId { get; set; }
 
-    
-        
+        public List<PastryDTO> Pastries { get; set; } // ✅ Needed
+
+
     }
 }

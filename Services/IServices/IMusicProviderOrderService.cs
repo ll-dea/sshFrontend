@@ -3,7 +3,7 @@ using SSH_FrontEnd.Models.DTOs;
 
 namespace SSH_FrontEnd.Services.IServices
 {
-    public interface IMusicProviderOrderService
+    public interface IMusicProviderOrderService : IBaseServices
     {
         Task<T> GetAllAsync<T>();
         Task<T> GetAsync<T>(int id);

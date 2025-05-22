@@ -1,0 +1,21 @@
+﻿@* _FlowerArrangementDetailsList.cshtml *@
+@model List<SSH_FrontEnd.Models.DTOs.FloristDTO>
+
+<h4>Florists and Their Arrangements</h4>
+@foreach (var florist in Model)
+{
+    <div class="card mb-3">
+        <div class="card-header">
+            <strong>@florist.Name</strong> - @florist.Address
+        </div>
+        <div class="card-body">
+            @foreach (var item in florist.FlowerArrangementTypes)
+            {
+                <div class="border p-2 mb-2">
+                    <span>@item</span>
+                    <button class="btn btn-sm btn-primary float-end" onclick="bookItem('Florist', @item.GetHashCode())">Book</button>
+                </div>
+            }
+        </div>
+    </div>
+}

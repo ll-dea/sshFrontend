@@ -1,228 +1,114 @@
-﻿@using SSH_FrontEnd.VM.EventVM
-@model EventCreateVM
+﻿@model SSH_FrontEnd.VM.EventVM.EventCreateVM
 
 @{
     ViewData["Title"] = "Create Event";
 }
 
-<div class="container mt-4">
-    <h2 class="mb-4">🎉 Plan Your Event</h2>
+<h2>Create Event</h2>
 
-    <form asp-action="Create" method="post" class="row g-3">
-        <div class="col-md-6">
-            <label asp-for="EventName" class="form-label">Event Name</label>
-            <input asp-for="EventName" class="form-control" placeholder="e.g. John's Birthday" />
-        </div>
-
-        <div class="col-md-6">
-            <label asp-for="EventType" class="form-label">Event Type</label>
-            <input asp-for="EventType" class="form-control" placeholder="e.g. Birthday, Wedding" />
-        </div>
-
-        <div class="col-md-6">
-            <label asp-for="EventDate" class="form-label">Event Date</label>
-            <input asp-for="EventDate" type="date" class="form-control" />
-        </div>
-
-        <div class="col-md-12">
-            <h4 class="mt-4">Book Services</h4>
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#floristModal">Florists</button>
-                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#menuModal">Menus</button>
-                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#musicModal">Music</button>
-                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#pastryModal">Pastries</button>
-                <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#venueModal">Venues</button>
-            </div>
-        </div>
-
-        <div class="col-12 mt-4">
-            <button type="submit" class="btn btn-primary w-100">
-                <i class="bi bi-check-circle-fill"></i> Create Event
-            </button>
-        </div>
-    </form>
-</div>
-
-<!-- Modal Template -->
-@* Repeat this modal for each service with unique ids *@
-<div class="modal fade" id="floristModal" tabindex="-1" aria-labelledby="floristModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Available Florists</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-            <div class="modal-body">
-                <table class="table">
-                    <thead><tr><th>Name</th><th>Type</th><th>Price</th><th></th></tr></thead>
-                    <tbody>
-                        @foreach (var florist in Model.FloristItems)
-                        {
-                            <tr>
-                                <td>@florist.Name</td>
-                                <td>@florist.PartnerStatusId</td>
-                                <td></td> 
-                                <td>
-                                    <button class="btn btn-success" onclick="confirmBooking('Florist')">Book</button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
+<!-- Step 1: Basic Event Info -->
+<div id="event-step-1">
+    <div class="form-group">
+        <label asp-for="Event.EventName">Event Name</label>
+        <input asp-for="Event.EventName" class="form-control" />
     </div>
-</div>
-
-<!-- Menu Modal -->
-<div class="modal fade" id="menuModal" tabindex="-1" aria-labelledby="menuModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="menuModalLabel">Available Menus</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Price</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var menu in Model.MenuItems)
-                        {
-                            <tr>
-                                <td>@menu.Name</td>
-                                <td>@menu.MenuTypeId</td>
-                                <td>$@menu.Price</td>
-                                <td>
-                                    <button type="button" class="btn btn-success" onclick="confirmBooking('Menu')">Book</button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <div class="form-group">
+        <label asp-for="Event.EventDate">Event Date</label>
+        <input asp-for="Event.EventDate" type="date" class="form-control" />
     </div>
-</div>
-
-<div class="modal fade" id="musicModal" tabindex="-1" aria-labelledby="musicModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="menuModalLabel">Available music providers</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Price</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var menu in Model.MusicProviders)
-                        {
-                            <tr>
-                                <td>@menu.Text</td>
-                                <td>TypePlaceholder</td>
-                                <td>$PricePlaceholder</td>
-                                <td>
-                                    <button type="button" class="btn btn-success" onclick="confirmBooking('Music')">Book</button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <div class="form-group">
+        <label asp-for="Event.EventType">Event Type</label>
+        <input asp-for="Event.EventType" class="form-control" />
     </div>
-</div>
-<div class="modal fade" id="venueModal" tabindex="-1" aria-labelledby="venueModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="venueModalLabel">Available venue providers</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Price</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var menu in Model.Venues)
-                        {
-                            <tr>
-                                <td>@menu.Text</td>
-                                <td>TypePlaceholder</td>
-                                <td>$PricePlaceholder</td>
-                                <td>
-                                    <button type="button" class="btn btn-success" onclick="confirmBooking('Venues')">Book</button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="modal fade" id="pastriesModal" tabindex="-1" aria-labelledby="pastriesModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="pastriesModalLabel">Available Pastries </h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Type</th>
-                            <th>Price</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var menu in Model.Pastries)
-                        {
-                            <tr>
-                                <td>@menu.Text</td>
-                                <td>TypePlaceholder</td>
-                                <td>$PricePlaceholder</td>
-                                <td>
-                                    <button type="button" class="btn btn-success" onclick="confirmBooking('Pastries')">Book</button>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+    <button type="button" id="btnDone" class="btn btn-primary mt-2">Done</button>
 </div>
 
+<!-- Step 2: Provider Buttons -->
+<div id="provider-buttons" class="mt-3" style="display:none;">
+    <button class="btn btn-outline-dark" onclick="loadPartial('Pastry')">Pastry Shops</button>
+    <button class="btn btn-outline-dark" onclick="loadPartial('Music')">Music Providers</button>
+    <button class="btn btn-outline-dark" onclick="loadPartial('Venue')">Venue Providers</button>
+    <button class="btn btn-outline-dark" onclick="loadPartial('Florist')">Florists</button>
+    <button class="btn btn-outline-dark" onclick="loadPartial('Menu')">Menus</button>
+</div>
 
+<!-- Step 3–5: Dynamic Section Display -->
+<div id="partial-section" class="mt-4"></div>
 
-<script>
-    function confirmBooking(type) {
-        if (confirm(`Are you sure you want to book this ${type}?`)) {
-            alert(`${type} booked successfully!`);
-        }
+<!-- Step 6: Submit Form -->
+<form asp-action="CreateFinal" method="post">
+    @* Hidden inputs for Event *@
+    <input type="hidden" asp-for="Event.EventName" />
+    <input type="hidden" asp-for="Event.EventDate" />
+    <input type="hidden" asp-for="Event.EventType" />
+
+    @* Hidden fields for booked item IDs *@
+    @foreach (var id in Model.BookedPastryIds)
+    {
+        <input type="hidden" name="BookedPastryIds" value="@id" />
     }
-</script>
+    @foreach (var id in Model.BookedMenuIds)
+    {
+        <input type="hidden" name="BookedMenuIds" value="@id" />
+    }
+    @foreach (var id in Model.BookedVenueIds)
+    {
+        <input type="hidden" name="BookedVenueIds" value="@id" />
+    }
+    @foreach (var id in Model.BookedFloristIds)
+    {
+        <input type="hidden" name="BookedFloristIds" value="@id" />
+    }
+    @foreach (var id in Model.BookedMusicIds)
+    {
+        <input type="hidden" name="BookedMusicIds" value="@id" />
+    }
+
+    <button type="submit" class="btn btn-success mt-3">Finish</button>
+</form>
+
+@section Scripts {
+    <script>
+        window.onload = function () {
+            document.getElementById("btnDone").addEventListener("click", function () {
+                const name = document.getElementById("Event_EventName").value;
+                const date = document.getElementById("Event_EventDate").value;
+                const type = document.getElementById("Event_EventType").value;
+
+                if (name && date && type) {
+                    document.getElementById("provider-buttons").style.display = "block";
+                } else {
+                    alert("Please fill all event fields before proceeding.");
+                }
+            });
+        };
+
+        function loadPartial(type) {
+            fetch(`/Event/Get${type}DetailsList`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("Failed to load partial view.");
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    document.getElementById("partial-section").innerHTML = html;
+                })
+                .catch(err => {
+                    alert("Error: " + err.message);
+                });
+        }
+
+        function bookItem(type, id) {
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = `Booked${type}Ids`;
+            input.value = id;
+            document.forms[0].appendChild(input);
+            alert(`${type} with ID ${id} booked!`);
+        }
+    </script>
+}
+
+
+
