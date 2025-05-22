@@ -10,7 +10,7 @@ using Utility;
 
 namespace SSH_FrontEnd.Controllers
 {
-    [Authorize(Roles = "CLIENT")]
+    [Authorize(Roles = "client")]
     public class EventController : Controller
     {
         private readonly IEventServices _eventService;
