@@ -20,7 +20,8 @@ namespace SSH_FrontEnd.Models.DTOs
         public decimal? AgencyFee { get; set; }
 
         public int? PartnerStatusId { get; set; }
-       
+
+        public List<VenueDTO> Venues { get; set; } // ✅ Needed
 
 
     }

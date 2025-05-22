@@ -33,8 +33,9 @@ namespace SSH_FrontEnd.Models.DTOs
 
         public decimal? BaseHourlyRate { get; set; }
 
+        public List<PlaylistItemDTO> PlaylistItems { get; set; } // ✅ Needed
 
 
-        
+
     }
 }

@@ -20,7 +20,7 @@ public  class Pastry:IHasIdAndName
 
     public int? PastryTypeId { get; set; }
 
-    public virtual PastryType PastryType { get; set; }
+    public virtual Pastry PastryType { get; set; }
 
     public virtual PastryShop Shop { get; set; }
 

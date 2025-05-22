@@ -1,177 +1,281 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using SSH_FrontEnd.Models;
-using SSH_FrontEnd.Models.Common;
 using SSH_FrontEnd.Models.DTOs;
 using SSH_FrontEnd.Services.IServices;
 using SSH_FrontEnd.VM.EventVM;
 using Utility;
 
-[Authorize(Roles = "client")]
-public class EventController : Controller
+namespace SSH_FrontEnd.Controllers
 {
-    private readonly IEventServices _eventService;
-    private readonly IVenueService _venueService;
-    private readonly IFloristService _floristService;
-    private readonly IMapper _mapper;
-    private readonly IMusicProviderService _musicService;
-    private readonly IMenuService _menuService;
-   
-    private readonly IPastryService _pastryService;
-
-
-    public EventController(IEventServices eventService, IVenueService venueService, IFloristService floristService, IMapper mapper, IMusicProviderService musicProviderService,  IPastryService pastryService, IMenuService menuService)
+    [Authorize(Roles = "CLIENT")]
+    public class EventController : Controller
     {
-        _eventService = eventService;
-        _venueService = venueService;
-        _floristService = floristService;
-        _mapper = mapper;
-        _musicService = musicProviderService;
-        _menuService = menuService;
-        _pastryService = pastryService;
-    }
+        private readonly IEventServices _eventService;
+        private readonly IVenueProviderService _venueProviderService;
+        private readonly IVenueService _venueService;
+        private readonly IVenueOrderService _venueOrderService;
 
-    public async Task<IActionResult> IndexEvent()
-    {
-        var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        private readonly IFloristService _floristService;
+        private readonly IFlowerArrangmentService _flowerService;
+        private readonly IFlowerArrangmentOrderService _flowerOrderService;
 
-        List<EventDTO> list = new();
-        var response = await _eventService.GetAllAsync<APIResponse>();
-        if (response != null && response.IsSuccess && response.Result is not null)
+        private readonly IMusicProviderService _musicService;
+        private readonly IMusicProviderOrderService _musicOrderService;
+        private readonly IPlaylistItemService _playlistService;
+
+        private readonly IMenuService _menuService;
+        private readonly IMenuOrderService _menuOrderService;
+
+        private readonly IPastryShopService _pastryShopService;
+        private readonly IPastryService _pastryService;
+        private readonly IPastryOrderService _pastryOrderService;
+
+        private readonly IMapper _mapper;
+
+        public EventController(
+            IEventServices eventService,
+            IVenueProviderService venueProviderService,
+            IVenueService venueService,
+            IVenueOrderService venueOrderService,
+            IFloristService floristService,
+            IFlowerArrangmentService flowerService,
+            IFlowerArrangmentOrderService flowerOrderService,
+            IMusicProviderService musicService,
+            IMusicProviderOrderService musicOrderService,
+            IPlaylistItemService playlistService,
+            IMenuService menuService,
+            IMenuOrderService menuOrderService,
+            IPastryShopService pastryShopService,
+            IPastryService pastryService,
+            IPastryOrderService pastryOrderService,
+            IMapper mapper)
         {
-            list = JsonConvert.DeserializeObject<List<EventDTO>>(Convert.ToString(response.Result));
+            _eventService = eventService;
+            _venueProviderService = venueProviderService;
+            _venueService = venueService;
+            _venueOrderService = venueOrderService;
+
+            _floristService = floristService;
+            _flowerService = flowerService;
+            _flowerOrderService = flowerOrderService;
+
+            _musicService = musicService;
+            _musicOrderService = musicOrderService;
+            _playlistService = playlistService;
+
+            _menuService = menuService;
+            _menuOrderService = menuOrderService;
+
+            _pastryShopService = pastryShopService;
+            _pastryService = pastryService;
+            _pastryOrderService = pastryOrderService;
+
+            _mapper = mapper;
         }
 
-        // ✅ Filter only events where ApplicationUserId == logged-in user ID
-        list = list.Where(e => e.ApplicationUserId == userId).ToList();
+    
 
-        var mappedList = _mapper.Map<List<MyEventsViewModel>>(list);
-
-        return View("~/Views/Client/MyEvents.cshtml", mappedList);
-    }
-
-
-
-    [HttpGet]
-
-    [HttpGet]
-    public async Task<IActionResult> Create()
-    {
-        var model = new EventCreateVM
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateFinal(EventCreateVM model)
         {
-            Venues = await LoadSelectListAsync<Venue>(_venueService),
-            Florists = await LoadSelectListAsync<Florist>(_floristService),
-            MusicProviders = await LoadSelectListAsync<MusicProvider>(_musicService),
-            Menues = await LoadMenusAsync(),
-            Pastries = await LoadSelectListAsync<Pastry>(_pastryService)
-        };
-
-        return View("CreateEvent", model);
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> Create(EventCreateVM model)
-    {
-        if (!ModelState.IsValid)
-        {
-            model.Venues = await LoadSelectListAsync<Venue>(_venueService);
-            model.Florists = await LoadSelectListAsync<Florist>(_floristService);
-            model.MusicProviders = await LoadSelectListAsync<MusicProvider>(_musicService);
-            model.Menues = await LoadMenusAsync();
-            model.Pastries = await LoadSelectListAsync<Pastry>(_pastryService);
-
-            return View("CreateEvent", model);
-        }
-
-        var eventDto = new EventDTO
-        {
-            EventName = model.EventName,
-            EventType = model.EventType,
-            EventDate = model.EventDate
-        };
-
-        var response = await _eventService.CreateAsync<APIResponse>(eventDto);
-
-        if (response != null && response.IsSuccess)
-        {
-            return RedirectToAction("MyEvents");
-        }
-
-        ModelState.AddModelError("", "Failed to create event.");
-
-        // Reload dropdowns again
-        model.Venues = await LoadSelectListAsync<Venue>(_venueService);
-        model.Florists = await LoadSelectListAsync<Florist>(_floristService);
-        model.MusicProviders = await LoadSelectListAsync<MusicProvider>(_musicService);
-        model.Menues = await LoadMenusAsync();
-        model.Pastries = await LoadSelectListAsync<Pastry>(_pastryService);
-
-        return View("CreateEvent", model);
-    }
-
-
-    //private async Task<IEnumerable<SelectListItem>> LoadVenuesAsync()
-    //{
-    //    var apiResponse = await _venueService.GetAllAsync<APIResponse>();
-
-    //    if (apiResponse.IsSuccess && apiResponse.Result is not null)
-    //    {
-    //        var json = JsonConvert.SerializeObject(apiResponse.Result);
-    //        var venues = JsonConvert.DeserializeObject<List<Venue>>(json);
-    //        return venues.Select(v => new SelectListItem { Value = v.VenueId.ToString(), Text = v.Name });
-    //    }
-
-    //    return Enumerable.Empty<SelectListItem>();
-    //}
-
-    //private async Task<IEnumerable<SelectListItem>> LoadFloristsAsync()
-    //{
-    //    var apiResponse = await _floristService.GetAllAsync<APIResponse>();
-
-    //    if (apiResponse.IsSuccess && apiResponse.Result is not null)
-    //    {
-    //        var json = JsonConvert.SerializeObject(apiResponse.Result);
-    //        var florists = JsonConvert.DeserializeObject<List<Florist>>(json);
-    //        return florists.Select(f => new SelectListItem { Value = f.FloristId.ToString(), Text = f.Name });
-    //    }
-
-    //    return Enumerable.Empty<SelectListItem>();
-    //}
-
-    private async Task<IEnumerable<SelectListItem>> LoadSelectListAsync<TModel>(IBaseServices service)
-    where TModel : class, IHasIdAndName
-    {
-        var response = await service.GetAllAsync<APIResponse>();
-
-        if (response != null && response.IsSuccess && response.Result is not null)
-        {
-            var json = JsonConvert.SerializeObject(response.Result);
-            var list = JsonConvert.DeserializeObject<List<TModel>>(json);
-
-            return list.Select(item => new SelectListItem
+            if (!ModelState.IsValid)
             {
-                Value = item.Id.ToString(),
-                Text = item.Name
-            });
+                model.Florists = await _floristService.GetAllAsync<List<FloristDTO>>();
+                model.PastryShops = await _pastryShopService.GetAllAsync<List<PastryShopDTO>>();
+                model.VenueProviders = await _venueProviderService.GetAllAsync<List<VenueProviderDTO>>();
+                model.MusicProviders = await _musicService.GetAllAsync<List<MusicProviderDTO>>();
+                model.Menus = await _menuService.GetAllAsync<List<MenuDTO>>();
+                return View("CreateEvent", model);
+            }
+
+            var createdEvent = await _eventService.CreateAsync<EventDTO>(model.Event);
+            if (createdEvent == null)
+            {
+                ModelState.AddModelError("", "Could not create event.");
+                return View("CreateEvent", model);
+            }
+
+            int eventId = createdEvent.EventId;
+
+            // BOOKED PASTRIES
+            foreach (var id in model.BookedPastryIds)
+            {
+                var pastry = await _pastryService.GetAsync<PastryDTO>(id);
+                var dto = new PastryOrderDTO
+                {
+                    OrderName = pastry.PastryName,
+                    OrderPrice = pastry.Price,
+                    AgencyFee = 0,
+                    OrderDescription = $"Auto-booked from event {eventId}",
+                    Notes = "",
+                    EventId = eventId
+                };
+                await _pastryOrderService.CreateAsync<APIResponse>(dto);
+            }
+
+            // BOOKED MENUS
+            foreach (var id in model.BookedMenuIds)
+            {
+                var menu = await _menuService.GetAsync<MenuDTO>(id);
+                var dto = new MenuOrderDTO
+                {
+                    OrderName = menu.MenuName,
+                    OrderPrice = menu.Price,
+                    AgencyFee = 0,
+                    Allergents = "",
+                    IngreedientsForbiddenByReligion = "",
+                    AdditionalRequests = "",
+                    EventId = eventId
+                };
+                await _menuOrderService.CreateAsync<APIResponse>(dto);
+            }
+
+            // BOOKED VENUES
+            foreach (var id in model.BookedVenueIds)
+            {
+                var venue = await _venueService.GetAsync<VenueDTO>(id);
+                var dto = new VenueOrderDTO
+                {
+                    VenueId = venue.VenueId,
+                    Name = venue.Name,
+                    Description = venue.Description,
+                    Price = venue.Price,
+                    Address = venue.Address,
+                    AgencyFee = 0,
+                    Notes = "",
+                    EventId = eventId
+                };
+                await _venueOrderService.CreateAsync<APIResponse>(dto);
+            }
+
+            // BOOKED FLORISTS
+            foreach (var id in model.BookedFloristIds)
+            {
+                var flowers = await _flowerService.GetAllAsync<List<FlowerArrangementDTO>>();
+                var floristFlowers = flowers.Where(f => f.FloristId == id);
+                foreach (var f in floristFlowers)
+                {
+                    var dto = new FlowerArrangementOrderDTO
+                    {
+                        OrderName = f.Name,
+                        OrderPrice = f.Price,
+                        AgencyFee = 0,
+                        OrderDescription = f.Description,
+                        Notes = "",
+                        EventId = eventId
+                    };
+                    await _flowerOrderService.CreateAsync<APIResponse>(dto);
+                }
+            }
+
+            // BOOKED MUSIC
+            foreach (var id in model.BookedMusicIds)
+            {
+                var music = await _musicService.GetAsync<MusicProviderDTO>(id);
+                var dto = new MusicProviderOrderDTO
+                {
+                    OrderName = music.Name,
+                    OrderPrice = music.BaseHourlyRate ?? 0,
+                    AgencyFee = (double)(music.AgencyFee ?? 0),
+                    Notes = "",
+                    MusicProviderAddress = music.Address,
+                    PhoneNumber = music.PhoneNumber,
+                    Email = music.Email,
+                    EventId = eventId
+                };
+                await _musicOrderService.CreateAsync<APIResponse>(dto);
+            }
+
+            TempData["success"] = "Event successfully created!";
+            return RedirectToAction("Index");
         }
-
-        return Enumerable.Empty<SelectListItem>();
-    }
-    private async Task<IEnumerable<SelectListItem>> LoadMenusAsync()
-    {
-        var apiResponse = await _menuService.GetAllAsync<APIResponse>();
-
-        if (apiResponse.IsSuccess && apiResponse.Result is not null)
+        [HttpGet]
+        public async Task<IActionResult> Create()
         {
-            var json = JsonConvert.SerializeObject(apiResponse.Result);
-            var menus = JsonConvert.DeserializeObject<List<Menu>>(json);
-            return menus.Select(f => new SelectListItem { Value = f.MenuId.ToString(), Text = f.Name });
+            var floristRes = await _floristService.GetAllAsync<APIResponse>();
+            var pastryRes = await _pastryShopService.GetAllAsync<APIResponse>();
+            var venueRes = await _venueProviderService.GetAllAsync<APIResponse>();
+            var musicRes = await _musicService.GetAllAsync<APIResponse>();
+            var menuRes = await _menuService.GetAllAsync<APIResponse>();
+
+            var vm = new EventCreateVM
+            {
+                Event = new EventDTO(),
+                Florists = ExtractList<FloristDTO>(floristRes),
+                PastryShops = ExtractList<PastryShopDTO>(pastryRes),
+                VenueProviders = ExtractList<VenueProviderDTO>(venueRes),
+                MusicProviders = ExtractList<MusicProviderDTO>(musicRes),
+                Menus = ExtractList<MenuDTO>(menuRes)
+            };
+
+            return View("CreateEvent", vm);
         }
 
-        return Enumerable.Empty<SelectListItem>();
-    }
+        private List<T> ExtractList<T>(APIResponse response)
+        {
+            if (response?.IsSuccess == true && response.Result != null)
+            {
+                return JsonConvert.DeserializeObject<List<T>>(response.Result.ToString());
+            }
+            return new List<T>();
+        }
 
+        [HttpGet]
+        public async Task<IActionResult> GetPastryDetailsList()
+        {
+            var response = await _pastryShopService.GetAllAsync<APIResponse>();
+            var list = ExtractList<PastryShopDTO>(response);
+            return PartialView("_PastryDetailsList", list); // sends HTML to browser
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetMusicDetailsList()
+        {
+            var response = await _musicService.GetAllAsync<APIResponse>();
+            var list = ExtractList<MusicProviderDTO>(response);
+            return PartialView("_MusicDetailsList", list);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetVenueDetailsList()
+        {
+            var response = await _venueProviderService.GetAllAsync<APIResponse>();
+            var list = ExtractList<VenueProviderDTO>(response);
+            return PartialView("_VenueDetailsList", list);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetFloristDetailsList()
+        {
+            var response = await _floristService.GetAllAsync<APIResponse>();
+            var list = ExtractList<FloristDTO>(response);
+            return PartialView("_FloristDetailsList", list);
+        }
+        [HttpGet]
+        public async Task<IActionResult> GetMenuDetailsList()
+        {
+            var response = await _menuService.GetAllAsync<APIResponse>();
+            var list = ExtractList<MenuDTO>(response);
+            return PartialView("_MenuDetailsList", list);
+        }
+        public async Task<IActionResult> LoadPastryShopsWithPastries()
+        {
+            var shopResponse = await _pastryShopService.GetAllAsync<APIResponse>();
+            var pastryResponse = await _pastryService.GetAllAsync<APIResponse>();
+
+            var shops = JsonConvert.DeserializeObject<List<PastryShopDTO>>(Convert.ToString(shopResponse.Result));
+            var pastries = JsonConvert.DeserializeObject<List<PastryDTO>>(Convert.ToString(pastryResponse.Result));
+
+            // Manual frontend join
+            foreach (var shop in shops)
+            {
+                shop.Pastries = pastries.Where(p => p.ShopId == shop.ShopId).ToList();
+            }
+
+            return PartialView("_PastryDetailsList", shops);
+        }
+
+
+    }
 }

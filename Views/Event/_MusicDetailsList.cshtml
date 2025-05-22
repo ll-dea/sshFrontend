@@ -1,0 +1,28 @@
+﻿@* _MusicDetailsList.cshtml *@
+@model List<SSH_FrontEnd.Models.DTOs.MusicProviderDTO>
+
+<h4>Music Providers and Their Playlist Items</h4>
+@foreach (var provider in Model)
+{
+    <div class="card mb-3">
+        <div class="card-header">
+            <strong>@provider.Name</strong> - @provider.Address
+        </div>
+        <div class="card-body">
+     @if (provider.PlaylistItems != null)
+    {
+            @foreach (var song in provider.PlaylistItems)
+            {
+                <div class="border p-2 mb-2">
+                    <span>@song.Name - @song.Length</span>
+                    <button class="btn btn-sm btn-primary float-end" onclick="bookItem('Music', @song.PlaylistItemId)">Book</button>
+                </div>
+            }
+    }
+            else
+            {
+                <div class="text-muted">No playlists found for this shop.</div>
+            }
+        </div>
+    </div>
+}

@@ -1,0 +1,29 @@
+﻿@* _VenueDetailsList.cshtml *@
+@model List<SSH_FrontEnd.Models.DTOs.VenueProviderDTO>
+
+<h4>Venue Providers and Their Venues</h4>
+@foreach (var provider in Model)
+{
+    <div class="card mb-3">
+        <div class="card-header">
+            <strong>@provider.Name</strong> - @provider.Address
+        </div>
+        <div class="card-body">
+            @if (provider.Venues != null && provider.Venues.Any())
+            {
+                foreach (var venue in provider.Venues)
+                {
+                    <div class="border p-2 mb-2">
+                        <span>@venue.Name - @venue.Price€</span><br />
+                        <small>@venue.Description</small>
+                        <button class="btn btn-sm btn-primary float-end" onclick="bookItem('Venue', @venue.VenueId)">Book</button>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="text-muted">No venues found for this venue provider.</div>
+            }
+        </div>
+    </div>
+}
