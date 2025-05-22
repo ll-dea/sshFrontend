@@ -22,6 +22,7 @@ namespace MagicVilla_Web.Services
             try
             {
                 var client = httpClient.CreateClient("EventPlannerAPI");
+
                 var message = new HttpRequestMessage
                 {
                     RequestUri = new Uri(apiRequest.Url),
@@ -38,35 +39,45 @@ namespace MagicVilla_Web.Services
                 if (apiRequest.Data != null)
                 {
                     message.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data),
-                                        Encoding.UTF8, "application/json");
+                                            Encoding.UTF8, "application/json");
                 }
 
                 var apiResponse = await client.SendAsync(message);
                 var content = await apiResponse.Content.ReadAsStringAsync();
 
-                if (!apiResponse.IsSuccessStatusCode)
+                // Always deserialize as APIResponse first
+                var deserializedResponse = JsonConvert.DeserializeObject<APIResponse>(content);
+
+                if (!apiResponse.IsSuccessStatusCode || deserializedResponse == null || !deserializedResponse.IsSuccess)
                 {
-                    var error = new APIResponse
-                    {
-                        StatusCode = apiResponse.StatusCode,
-                        IsSuccess = false,
-                        ErrorsMessages = new List<string> { content }
-                    };
-                    return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(error));
+                    deserializedResponse ??= new APIResponse();
+                    deserializedResponse.IsSuccess = false;
+                    deserializedResponse.StatusCode = apiResponse.StatusCode;
+                    deserializedResponse.ErrorsMessages ??= new List<string> { content };
+                    return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(deserializedResponse));
                 }
 
-                return JsonConvert.DeserializeObject<T>(content);
-            }
-            catch (Exception e)
-            {
-                var dto = new APIResponse()
+                // Extract the actual result
+                if (typeof(T) == typeof(APIResponse))
                 {
-                    ErrorsMessages = new List<string> { e.Message },
-                    IsSuccess = false
+                    return JsonConvert.DeserializeObject<T>(content); // Return raw APIResponse
+                }
+                else
+                {
+                    return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(deserializedResponse.Result)); // Return just Result
+                }
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new APIResponse
+                {
+                    IsSuccess = false,
+                    ErrorsMessages = new List<string> { ex.Message }
                 };
-                return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(dto));
+                return JsonConvert.DeserializeObject<T>(JsonConvert.SerializeObject(errorResponse));
             }
         }
+
 
         public virtual Task<T> GetAllAsync<T>()
         {

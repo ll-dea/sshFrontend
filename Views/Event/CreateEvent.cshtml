@@ -5,8 +5,11 @@
 }
 
 <h2>Create Event</h2>
-
+<form asp-action="CreateFinal" method="post">
+    @Html.AntiForgeryToken()
 <!-- Step 1: Basic Event Info -->
+   
+
 <div id="event-step-1">
     <div class="form-group">
         <label asp-for="Event.EventName">Event Name</label>
@@ -20,15 +23,16 @@
         <label asp-for="Event.EventType">Event Type</label>
         <input asp-for="Event.EventType" class="form-control" />
     </div>
-    <button type="button" id="btnDone" class="btn btn-primary mt-2">Done</button>
-</div>
+        <button type="button" id="btnDone" class="btn btn-primary mt-2">Done</button>
+    </div>
 
 <!-- Step 2: Provider Buttons -->
 <div id="provider-buttons" class="mt-3" style="display:none;">
-    <button class="btn btn-outline-dark" onclick="loadPartial('Pastry')">Pastry Shops</button>
-    <button class="btn btn-outline-dark" onclick="loadPartial('Music')">Music Providers</button>
-    <button class="btn btn-outline-dark" onclick="loadPartial('Venue')">Venue Providers</button>
-    <button class="btn btn-outline-dark" onclick="loadPartial('Florist')">Florists</button>
+        <<button type="button" class="btn btn-outline-dark" onclick="loadPartial('Pastry')">Pastry Shops</button>
+        <button type="button" class="btn btn-outline-dark" onclick="loadPartial('Music')">Music Providers</button>
+        <button type="button" class="btn btn-outline-dark" onclick="loadPartial('Venue')">Venue Providers</button>
+        <button type="button" class="btn btn-outline-dark" onclick="loadPartial('Florist')">Florists</button>
+
 </div>
 
 <!-- Step 3–5: Dynamic Section Display -->
@@ -41,11 +45,11 @@
 </div>
 
 <!-- Step 6: Submit Form -->
-<form asp-action="CreateFinal" method="post">
+
     <!-- Hidden inputs for Event -->
-    <input type="hidden" asp-for="Event.EventName" />
-    <input type="hidden" asp-for="Event.EventDate" />
-    <input type="hidden" asp-for="Event.EventType" />
+    @* <input type="hidden" asp-for="Event.EventName" /> *@
+    @* <input type="hidden" asp-for="Event.EventDate" /> *@
+    @* <input type="hidden" asp-for="Event.EventType" /> *@
 
     <!-- Hidden inputs for booked provider IDs -->
     @foreach (var id in Model.BookedPastryShopIds ?? new List<int>())
@@ -70,20 +74,54 @@
 
 @section Scripts {
     <script>
-        window.onload = function () {
-            document.getElementById("btnDone").addEventListener("click", function () {
-                const name = document.getElementById("Event_EventName").value;
-                const date = document.getElementById("Event_EventDate").value;
-                const type = document.getElementById("Event_EventType").value;
 
-                if (name && date && type) {
-                    document.getElementById("provider-buttons").style.display = "block";
-                    document.getElementById("booked-summary").style.display = "block";
-                } else {
-                    alert("Please fill all event fields before proceeding.");
-                }
+                document.getElementById("btnDone").addEventListener("click", function (event) {
+            event.preventDefault();  // <--- This stops the form submission explicitly
+
+            const name = document.getElementById("Event_EventName").value;
+            const date = document.getElementById("Event_EventDate").value;
+            const type = document.getElementById("Event_EventType").value;
+
+            if (name && date && type) {
+                document.getElementById("provider-buttons").style.display = "block";
+                document.getElementById("booked-summary").style.display = "block";
+            } else {
+                alert("Please fill all event fields before proceeding.");
+            }
+        });
+
+                window.onload = function() {
+            // Rebuild bookedItems and summary UI from hidden inputs
+            const form = document.forms[0];
+            ['PastryShop', 'MusicProvider', 'VenueProvider', 'Florist'].forEach(type => {
+                const inputs = form.querySelectorAll(`input[name='Booked${type}Ids']`);
+                inputs.forEach(input => {
+                    const id = parseInt(input.value);
+                    if (!isNaN(id)) {
+                        bookedItems[type].add(id);
+
+                        const summary = document.getElementById("booked-list");
+                        const itemElem = document.createElement("li");
+                        itemElem.id = `booked-${type}-${id}`;
+                        itemElem.textContent = `${type} ID: ${id} `;
+
+                        const removeBtn = document.createElement("button");
+                        removeBtn.type = "button";
+                        removeBtn.textContent = "Remove";
+                        removeBtn.classList.add("btn", "btn-sm", "btn-danger", "ms-2");
+                        removeBtn.onclick = function () {
+                            bookedItems[type].delete(id);
+                            input.remove();
+                            itemElem.remove();
+                        };
+
+                        itemElem.appendChild(removeBtn);
+                        summary.appendChild(itemElem);
+                    }
+                });
             });
         };
+
 
         function loadPartial(type) {
             fetch(`/Event/Get${type}DetailsList`)

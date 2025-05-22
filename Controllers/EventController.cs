@@ -6,6 +6,7 @@ using SSH_FrontEnd.Models;
 using SSH_FrontEnd.Models.DTOs;
 using SSH_FrontEnd.Services.IServices;
 using SSH_FrontEnd.VM.EventVM;
+using System.Security.Claims;
 using Utility;
 
 namespace SSH_FrontEnd.Controllers
@@ -82,6 +83,7 @@ namespace SSH_FrontEnd.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateFinal(EventCreateVM model)
         {
+          
             if (!ModelState.IsValid)
             {
                 model.Florists = await _floristService.GetAllAsync<List<FloristDTO>>();
@@ -89,9 +91,13 @@ namespace SSH_FrontEnd.Controllers
                 model.VenueProviders = await _venueProviderService.GetAllAsync<List<VenueProviderDTO>>();
                 model.MusicProviders = await _musicService.GetAllAsync<List<MusicProviderDTO>>();
                 model.Menus = await _menuService.GetAllAsync<List<MenuDTO>>();
+
+              
+
                 return View("CreateEvent", model);
             }
-
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier); 
+            model.Event.ApplicationUserId = userId;
             var createdEvent = await _eventService.CreateAsync<EventDTO>(model.Event);
             if (createdEvent == null)
             {
@@ -274,22 +280,23 @@ namespace SSH_FrontEnd.Controllers
             var list = ExtractList<MenuDTO>(response);
             return PartialView("_MenuDetailsList", list);
         }
-        public async Task<IActionResult> LoadPastryShopsWithPastries()
-        {
-            var shopResponse = await _pastryShopService.GetAllAsync<APIResponse>();
-            var pastryResponse = await _pastryService.GetAllAsync<APIResponse>();
+        //public async Task<IActionResult> LoadPastryShopsWithPastries()
+        //{
+        //    var shopResponse = await _pastryShopService.GetAllAsync<APIResponse>();
+        //    var pastryResponse = await _pastryService.GetAllAsync<APIResponse>();
 
-            var shops = JsonConvert.DeserializeObject<List<PastryShopDTO>>(Convert.ToString(shopResponse.Result));
-            var pastries = JsonConvert.DeserializeObject<List<PastryDTO>>(Convert.ToString(pastryResponse.Result));
+        //    var shops = shopResponse.Result != null ? JsonConvert.DeserializeObject<List<PastryShopDTO>>(Convert.ToString(shopResponse.Result)) : new List<PastryShopDTO>();
+        //    var pastries = pastryResponse.Result != null ? JsonConvert.DeserializeObject<List<PastryDTO>>(Convert.ToString(pastryResponse.Result)) : new List<PastryDTO>();
 
-            // Manual frontend join
-            foreach (var shop in shops)
-            {
-                shop.Pastries = pastries.Where(p => p.ShopId == shop.ShopId).ToList();
-            }
 
-            return PartialView("_PastryDetailsList", shops);
-        }
+        //    // Manual frontend join
+        //    foreach (var shop in shops)
+        //    {
+        //        shop.Pastries = pastries.Where(p => p.ShopId == shop.ShopId).ToList();
+        //    }
+
+        //    return PartialView("_PastryDetailsList", shops);
+        //}
 
 
     }
