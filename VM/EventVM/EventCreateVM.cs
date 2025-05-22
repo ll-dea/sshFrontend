@@ -14,10 +14,9 @@ namespace SSH_FrontEnd.VM.EventVM
         public List<MusicProviderDTO> MusicProviders { get; set; }
         public List<MenuDTO> Menus { get; set; }
 
-        public List<int> BookedPastryIds { get; set; } = new();
-        public List<int> BookedMenuIds { get; set; } = new();
-        public List<int> BookedVenueIds { get; set; } = new();
-        public List<int> BookedFloristIds { get; set; } = new();
-        public List<int> BookedMusicIds { get; set; } = new();
+        public List<int> BookedPastryShopIds { get; set; }
+        public List<int> BookedMusicProviderIds { get; set; }
+        public List<int> BookedVenueProviderIds { get; set; }
+        public List<int> BookedFloristIds { get; set; }
     }
 }

@@ -102,55 +102,69 @@ namespace SSH_FrontEnd.Controllers
             int eventId = createdEvent.EventId;
 
             // BOOKED PASTRIES
-            foreach (var id in model.BookedPastryIds)
+            // BOOKED PASTRY SHOPS
+            foreach (var shopId in model.BookedPastryShopIds)
             {
-                var pastry = await _pastryService.GetAsync<PastryDTO>(id);
-                var dto = new PastryOrderDTO
+                var pastries = await _pastryService.GetAllAsync<List<PastryDTO>>();
+                var shopPastries = pastries.Where(p => p.ShopId == shopId).ToList();
+
+                foreach (var pastry in shopPastries)
                 {
-                    OrderName = pastry.PastryName,
-                    OrderPrice = pastry.Price,
-                    AgencyFee = 0,
-                    OrderDescription = $"Auto-booked from event {eventId}",
-                    Notes = "",
-                    EventId = eventId
-                };
-                await _pastryOrderService.CreateAsync<APIResponse>(dto);
+                    var dto = new PastryOrderDTO
+                    {
+                        OrderName = pastry.PastryName,
+                        OrderPrice = pastry.Price,
+                        AgencyFee = 0,
+                        OrderDescription = $"Auto-booked from event {eventId}",
+                        Notes = "",
+                        EventId = eventId
+                    };
+                    await _pastryOrderService.CreateAsync<APIResponse>(dto);
+                }
             }
+
 
             // BOOKED MENUS
-            foreach (var id in model.BookedMenuIds)
-            {
-                var menu = await _menuService.GetAsync<MenuDTO>(id);
-                var dto = new MenuOrderDTO
-                {
-                    OrderName = menu.MenuName,
-                    OrderPrice = menu.Price,
-                    AgencyFee = 0,
-                    Allergents = "",
-                    IngreedientsForbiddenByReligion = "",
-                    AdditionalRequests = "",
-                    EventId = eventId
-                };
-                await _menuOrderService.CreateAsync<APIResponse>(dto);
-            }
+            //foreach (var id in model.BookedMenuIds)
+            //{
+            //    var menu = await _menuService.GetAsync<MenuDTO>(id);
+            //    var dto = new MenuOrderDTO
+            //    {
+            //        OrderName = menu.MenuName,
+            //        OrderPrice = menu.Price,
+            //        AgencyFee = 0,
+            //        Allergents = "",
+            //        IngreedientsForbiddenByReligion = "",
+            //        AdditionalRequests = "",
+            //        EventId = eventId
+            //    };
+            //    await _menuOrderService.CreateAsync<APIResponse>(dto);
+            //}
 
             // BOOKED VENUES
-            foreach (var id in model.BookedVenueIds)
+            // BOOKED VENUE PROVIDERS
+            foreach (var providerId in model.BookedVenueProviderIds)
             {
-                var venue = await _venueService.GetAsync<VenueDTO>(id);
-                var dto = new VenueOrderDTO
+                var venues = await _venueService.GetAllAsync<List<VenueDTO>>();
+                var providerVenues = venues.Where(v => v.VenueProviderId == providerId).ToList();
+
+                foreach (var venue in providerVenues)
                 {
-                    VenueId = venue.VenueId,
-                    Name = venue.Name,
-                    Description = venue.Description,
-                    Price = venue.Price,
-                    Address = venue.Address,
-                    AgencyFee = 0,
-                    Notes = "",
-                    EventId = eventId
-                };
-                await _venueOrderService.CreateAsync<APIResponse>(dto);
+                    var dto = new VenueOrderDTO
+                    {
+                        VenueId = venue.VenueId,
+                        Name = venue.Name,
+                        Description = venue.Description,
+                        Price = venue.Price,
+                        Address = venue.Address,
+                        AgencyFee = 0,
+                        Notes = "",
+                        EventId = eventId
+                    };
+                    await _venueOrderService.CreateAsync<APIResponse>(dto);
+                }
             }
+
 
             // BOOKED FLORISTS
             foreach (var id in model.BookedFloristIds)
@@ -172,8 +186,8 @@ namespace SSH_FrontEnd.Controllers
                 }
             }
 
-            // BOOKED MUSIC
-            foreach (var id in model.BookedMusicIds)
+            // BOOKED MUSIC PROVIDERS
+            foreach (var id in model.BookedMusicProviderIds)
             {
                 var music = await _musicService.GetAsync<MusicProviderDTO>(id);
                 var dto = new MusicProviderOrderDTO
@@ -189,6 +203,7 @@ namespace SSH_FrontEnd.Controllers
                 };
                 await _musicOrderService.CreateAsync<APIResponse>(dto);
             }
+
 
             TempData["success"] = "Event successfully created!";
             return RedirectToAction("Index");
