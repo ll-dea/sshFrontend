@@ -25,6 +25,8 @@ builder.Services.AddScoped<IFloristService, FloristService>();
 builder.Services.AddScoped<IMusicProviderService, MusicProviderService>();
 
 builder.Services.AddScoped<IPastryService, PastryService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
 builder.Services.AddScoped<IMenuService, MenuServices>();
 builder.Services.AddScoped<IVenueTypeService, VenueTypeService>();
 builder.Services.AddScoped<IVenueProviderService, VenueProviderService>();
