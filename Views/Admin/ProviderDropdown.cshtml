@@ -1,0 +1,32 @@
+﻿@model SSH_FrontEnd.VM.Admin.AdminProviderSelectionVM
+
+<h2>Provider Dropdowns</h2>
+
+<form method="post">
+    <div class="form-group">
+        <label>Pastry Shop</label>
+        <select asp-for="SelectedPastryShopId" asp-items="@(new SelectList(Model.PastryShops, "PastryShopId", "Name"))" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label>Florist</label>
+        <select asp-for="SelectedFloristId" asp-items="@(new SelectList(Model.Florists, "FloristId", "Name"))" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label>Music Provider</label>
+        <select asp-for="SelectedMusicProviderId" asp-items="@(new SelectList(Model.MusicProviders, "MusicProviderId", "Name"))" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label>Venue Provider</label>
+        <select asp-for="SelectedVenueProviderId" asp-items="@(new SelectList(Model.VenueProviders, "VenueProviderId", "Name"))" class="form-control"></select>
+    </div>
+
+    <div class="form-group">
+        <label>Menu</label>
+        <select asp-for="SelectedMenuId" asp-items="@(new SelectList(Model.Menus, "MenuId", "Title"))" class="form-control"></select>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
