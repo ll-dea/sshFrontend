@@ -7,7 +7,7 @@ using SSH_FrontEnd.Services.IServices;
 using SSH_FrontEnd.VM.Admin;
 using System.Security.Claims;
 
-[Authorize(Roles = "Admin")]
+[Authorize(Roles = "admin")]
 public class AdminController : Controller
 {
     private readonly IEventServices _eventService;

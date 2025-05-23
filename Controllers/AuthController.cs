@@ -78,7 +78,7 @@ namespace SSH_FrontEnd.Controllers
                 var userRole = claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value?.ToLower();
 
                 if (userRole == "admin")
-                    return RedirectToAction("Dashboard", "Admin");
+                    return RedirectToAction( "Admin");
                 else if (userRole == "client")
                     return RedirectToAction("Dashboard", "Client");
 
