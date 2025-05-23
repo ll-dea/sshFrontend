@@ -84,8 +84,8 @@ public class EventController : Controller
             return View("CreateEvent", model);
         }
 
-        // Save event
-        var createdEvent = await _eventService.CreateAsync<EventDTO>(model.Event);
+        // Update the following line in the POST: Create method to include the required 'token' parameter.  
+        var createdEvent = await _eventService.CreateAsync<EventDTO>(model.Event, "your_token_here");
 
         // Save provider orders
         await _venueOrderService.CreateAsync<APIResponse>(new VenueOrderDTO

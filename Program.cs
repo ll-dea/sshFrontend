@@ -21,10 +21,9 @@ builder.Services.AddScoped<IEventServices, EventServices>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IVenueService, VenueService>();
 builder.Services.AddScoped<IFloristService, FloristService>();
-
 builder.Services.AddScoped<IMusicProviderService, MusicProviderService>();
-
 builder.Services.AddScoped<IPastryService, PastryService>();
+builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMenuService, MenuServices>();
 builder.Services.AddScoped<IVenueTypeService, VenueTypeService>();
 builder.Services.AddScoped<IVenueProviderService, VenueProviderService>();
@@ -44,15 +43,19 @@ builder.Services.AddScoped<IPastryTypeService, PastryTypeService>();
 builder.Services.AddScoped<IPlaylistItemService, PlaylistItemService>();
 builder.Services.AddScoped<IPastryOrderService, PastryOrderService>();
 
+// HttpContext accessor
 builder.Services.AddHttpContextAccessor();
 
+// ? Add session services
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
-
-
-
-
-
-// Auth setup
+// ? Authentication setup
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -71,7 +74,11 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
+
 app.UseRouting();
+
+// ? Add session to middleware pipeline
+app.UseSession();
 
 app.UseAuthentication();
 app.UseAuthorization();

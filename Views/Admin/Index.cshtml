@@ -1,0 +1,14 @@
+﻿@model SSH_FrontEnd.VM.Admin.AdminDashboardViewModel
+
+<h2>Admin Dashboard</h2>
+
+<p>Total Users: <strong>@Model.TotalUsers</strong></p>
+<p>Total Events: <strong>@Model.TotalEvents</strong></p>
+
+<h4>Events by Type</h4>
+<ul>
+    @foreach (var stat in Model.EventStats)
+    {
+        <li>@stat.EventType: @stat.Count</li>
+    }
+</ul>
