@@ -83,9 +83,10 @@ public class EventController : Controller
             model.PastryShops = await _pastryService.GetAllAsync<List<PastryShop>>();
             return View("CreateEvent", model);
         }
+        var token = User.FindFirst("access_token")?.Value;
 
         // Update the following line in the POST: Create method to include the required 'token' parameter.  
-        var createdEvent = await _eventService.CreateAsync<EventDTO>(model.Event, "your_token_here");
+        var createdEvent = await _eventService.CreateAsync<EventDTO>(model.Event, token);
 
         // Save provider orders
         await _venueOrderService.CreateAsync<APIResponse>(new VenueOrderDTO
@@ -114,5 +115,9 @@ public class EventController : Controller
 
         return RedirectToAction("Dashboard", "Client");
     }
+
+
+   
+
 
 }

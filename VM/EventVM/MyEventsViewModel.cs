@@ -10,5 +10,6 @@ namespace SSH_FrontEnd.VM.EventVM
         public DateTime? EventDate { get; set; }
         public string VenueName { get; set; }
         public string Status { get; set; }
+        public string? ApplicationUserId { get;  set; }
     }
 }

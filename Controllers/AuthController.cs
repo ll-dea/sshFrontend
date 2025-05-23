@@ -54,6 +54,7 @@ namespace SSH_FrontEnd.Controllers
                 var token = handler.ReadJwtToken(loginResponse.Token);
 
                 var claims = token.Claims.ToList();
+                claims.Add(new Claim("access_token", loginResponse.Token)); // 👈 Add this line
 
                 var role = claims.FirstOrDefault(c => c.Type == "role")?.Value;
                 if (!string.IsNullOrEmpty(role))
