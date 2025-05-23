@@ -22,7 +22,9 @@ namespace SSH_FrontEnd.Models.DTOs
         public int? EventId { get; set; }
 
         public int? OrderStatusId { get; set; }
+        public int FloristId { get; set; }
 
-        
+
+
     }
 }

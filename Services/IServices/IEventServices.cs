@@ -10,7 +10,6 @@ namespace SSH_FrontEnd.Services.IServices
         Task<T> GetAsync<T>(int id);
         Task<T> UpdateAsync<T>(EventDTO dto);
 
-        Task<T> GetAllVenuesAsync<T>();
-        Task<T> GetAllFloristsAsync<T>();
+       
     }
 }

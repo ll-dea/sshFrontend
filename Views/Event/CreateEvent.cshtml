@@ -5,185 +5,41 @@
 }
 
 <h2>Create Event</h2>
-<form asp-action="CreateFinal" method="post">
-    @Html.AntiForgeryToken()
-<!-- Step 1: Basic Event Info -->
-   
 
-<div id="event-step-1">
+<form asp-action="Create" method="post">
     <div class="form-group">
-        <label asp-for="Event.EventName">Event Name</label>
+        <label asp-for="Event.EventName"></label>
         <input asp-for="Event.EventName" class="form-control" />
+        <span asp-validation-for="Event.EventName" class="text-danger"></span>
     </div>
+
     <div class="form-group">
-        <label asp-for="Event.EventDate">Event Date</label>
-        <input asp-for="Event.EventDate" type="date" class="form-control" />
-    </div>
-    <div class="form-group">
-        <label asp-for="Event.EventType">Event Type</label>
+        <label asp-for="Event.EventType"></label>
         <input asp-for="Event.EventType" class="form-control" />
+        <span asp-validation-for="Event.EventType" class="text-danger"></span>
     </div>
-        <button type="button" id="btnDone" class="btn btn-primary mt-2">Done</button>
+
+    <div class="form-group">
+        <label asp-for="Event.EventDate"></label>
+        <input asp-for="Event.EventDate" type="date" class="form-control" />
+        <span asp-validation-for="Event.EventDate" class="text-danger"></span>
     </div>
 
-<!-- Step 2: Provider Buttons -->
-<div id="provider-buttons" class="mt-3" style="display:none;">
-        <<button type="button" class="btn btn-outline-dark" onclick="loadPartial('Pastry')">Pastry Shops</button>
-        <button type="button" class="btn btn-outline-dark" onclick="loadPartial('Music')">Music Providers</button>
-        <button type="button" class="btn btn-outline-dark" onclick="loadPartial('Venue')">Venue Providers</button>
-        <button type="button" class="btn btn-outline-dark" onclick="loadPartial('Florist')">Florists</button>
+    <input type="hidden" asp-for="Event.ApplicationUserId" />
 
-</div>
+    <div class="form-group">
+        <label for="SelectedVenueId">Venue</label>
+        <select asp-for="SelectedVenueId" asp-items="@(new SelectList(Model.Venues, "Id", "Name"))" class="form-control"></select>
+    </div>
 
-<!-- Step 3–5: Dynamic Section Display -->
-<div id="partial-section" class="mt-4"></div>
+    <!-- Repeat for other providers (Music, Florist, PastryShop) -->
 
-<!-- Booked Providers Summary -->
-<div id="booked-summary" style="display:none; margin-top: 20px;">
-    <h4>Booked Providers</h4>
-    <ul id="booked-list" class="list-group"></ul>
-</div>
-
-<!-- Step 6: Submit Form -->
-
-    <!-- Hidden inputs for Event -->
-    @* <input type="hidden" asp-for="Event.EventName" /> *@
-    @* <input type="hidden" asp-for="Event.EventDate" /> *@
-    @* <input type="hidden" asp-for="Event.EventType" /> *@
-
-    <!-- Hidden inputs for booked provider IDs -->
-    @foreach (var id in Model.BookedPastryShopIds ?? new List<int>())
-    {
-        <input type="hidden" name="BookedPastryShopIds" value="@id" />
-    }
-    @foreach (var id in Model.BookedMusicProviderIds ?? new List<int>())
-    {
-        <input type="hidden" name="BookedMusicProviderIds" value="@id" />
-    }
-    @foreach (var id in Model.BookedVenueProviderIds ?? new List<int>())
-    {
-        <input type="hidden" name="BookedVenueProviderIds" value="@id" />
-    }
-    @foreach (var id in Model.BookedFloristIds ?? new List<int>())
-    {
-        <input type="hidden" name="BookedFloristIds" value="@id" />
-    }
-
-    <button type="submit" class="btn btn-success mt-3">Finish</button>
+    <button type="submit" class="btn btn-primary">Create and Select Providers</button>
 </form>
 
+
 @section Scripts {
-    <script>
-
-                document.getElementById("btnDone").addEventListener("click", function (event) {
-            event.preventDefault();  // <--- This stops the form submission explicitly
-
-            const name = document.getElementById("Event_EventName").value;
-            const date = document.getElementById("Event_EventDate").value;
-            const type = document.getElementById("Event_EventType").value;
-
-            if (name && date && type) {
-                document.getElementById("provider-buttons").style.display = "block";
-                document.getElementById("booked-summary").style.display = "block";
-            } else {
-                alert("Please fill all event fields before proceeding.");
-            }
-        });
-
-                window.onload = function() {
-            // Rebuild bookedItems and summary UI from hidden inputs
-            const form = document.forms[0];
-            ['PastryShop', 'MusicProvider', 'VenueProvider', 'Florist'].forEach(type => {
-                const inputs = form.querySelectorAll(`input[name='Booked${type}Ids']`);
-                inputs.forEach(input => {
-                    const id = parseInt(input.value);
-                    if (!isNaN(id)) {
-                        bookedItems[type].add(id);
-
-                        const summary = document.getElementById("booked-list");
-                        const itemElem = document.createElement("li");
-                        itemElem.id = `booked-${type}-${id}`;
-                        itemElem.textContent = `${type} ID: ${id} `;
-
-                        const removeBtn = document.createElement("button");
-                        removeBtn.type = "button";
-                        removeBtn.textContent = "Remove";
-                        removeBtn.classList.add("btn", "btn-sm", "btn-danger", "ms-2");
-                        removeBtn.onclick = function () {
-                            bookedItems[type].delete(id);
-                            input.remove();
-                            itemElem.remove();
-                        };
-
-                        itemElem.appendChild(removeBtn);
-                        summary.appendChild(itemElem);
-                    }
-                });
-            });
-        };
-
-
-        function loadPartial(type) {
-            fetch(`/Event/Get${type}DetailsList`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Failed to load partial view.");
-                    }
-                    return response.text();
-                })
-                .then(html => {
-                    document.getElementById("partial-section").innerHTML = html;
-                })
-                .catch(err => {
-                    alert("Error: " + err.message);
-                });
-        }
-
-        const bookedItems = {
-            PastryShop: new Set(),
-            MusicProvider: new Set(),
-            VenueProvider: new Set(),
-            Florist: new Set()
-        };
-
-        function bookItem(type, id) {
-            const form = document.forms[0];
-            const bookedType = `${type}`;
-
-            if (bookedItems[bookedType].has(id)) {
-                alert(`${type} with ID ${id} is already booked.`);
-                return;
-            }
-
-            bookedItems[bookedType].add(id);
-
-            const input = document.createElement("input");
-            input.type = "hidden";
-            input.name = `Booked${type}Ids`;
-            input.value = id;
-            input.dataset.bookedId = `${type}-${id}`;
-            form.appendChild(input);
-
-            const summary = document.getElementById("booked-list");
-            const itemElem = document.createElement("li");
-            itemElem.id = `booked-${type}-${id}`;
-            itemElem.textContent = `${type} ID: ${id} `;
-
-            const removeBtn = document.createElement("button");
-            removeBtn.type = "button";
-            removeBtn.textContent = "Remove";
-            removeBtn.classList.add("btn", "btn-sm", "btn-danger", "ms-2");
-            removeBtn.onclick = function () {
-                bookedItems[bookedType].delete(id);
-                const hiddenInput = form.querySelector(`input[data-booked-id='${type}-${id}']`);
-                if (hiddenInput) hiddenInput.remove();
-                itemElem.remove();
-            };
-
-            itemElem.appendChild(removeBtn);
-            summary.appendChild(itemElem);
-
-            alert(`${type} with ID ${id} booked!`);
-        }
-    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
