@@ -59,10 +59,20 @@ public class EventController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(EventCreateVM model)
     {
-        model.Event.ApplicationUserId = User.FindFirst(System.Security.Claims.ClaimTypes.Sid)?.Value;
+        model.Event.ApplicationUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
+        Console.WriteLine($" HEREEEEEE ApplicationUserId: {model.Event.ApplicationUserId ?? "null"}");
 
         if (!ModelState.IsValid)
         {
+            foreach (var key in ModelState.Keys)
+            {
+                var state = ModelState[key];
+                foreach (var error in state.Errors)
+                {
+                    Console.WriteLine($"Model error - Field: {key}, Error: {error.ErrorMessage}");
+                }
+            }
+
             // repopulate lists before returning
             model.Venues = await _venueService.GetAllAsync<List<VenueProvider>>();
             model.MusicProviders = await _musicService.GetAllAsync<List<MusicProvider>>();
