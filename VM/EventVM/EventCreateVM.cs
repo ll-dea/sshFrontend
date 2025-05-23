@@ -1,7 +1,5 @@
 ﻿using SSH_FrontEnd.Models;
 using SSH_FrontEnd.Models.DTOs;
-using System;
-using System.Collections.Generic;
 
 namespace SSH_FrontEnd.VM.EventVM
 {

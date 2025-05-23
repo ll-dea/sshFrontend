@@ -23,6 +23,7 @@ namespace MagicVilla_Web.Services
             {
                 var client = httpClient.CreateClient("EventPlannerAPI");
 
+
                 var message = new HttpRequestMessage
                 {
                     RequestUri = new Uri(apiRequest.Url),
@@ -78,13 +79,10 @@ namespace MagicVilla_Web.Services
             }
         }
 
-
-        public virtual Task<T> GetAllAsync<T>()
+        public Task<T> GetAllAsync<T>()
         {
-            throw new NotImplementedException("GetAllAsync must be implemented in derived services.");
+            throw new NotImplementedException();
         }
-
-
     }
 }
 

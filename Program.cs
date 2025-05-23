@@ -44,6 +44,7 @@ builder.Services.AddScoped<IPastryTypeService, PastryTypeService>();
 builder.Services.AddScoped<IPlaylistItemService, PlaylistItemService>();
 builder.Services.AddScoped<IPastryOrderService, PastryOrderService>();
 
+builder.Services.AddHttpContextAccessor();
 
 
 

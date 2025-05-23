@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using SSH_FrontEnd.Models;
 using SSH_FrontEnd.Models.DTOs;
 using SSH_FrontEnd.Models.ViewModels;
 using SSH_FrontEnd.Services.IServices;
-using SSH_FrontEnd.Models;
 using SSH_FrontEnd.VM.EventVM;
+
+[Authorize(Roles = "CLIENT")]
 
 public class EventController : Controller
 {
@@ -59,8 +61,9 @@ public class EventController : Controller
     [HttpPost]
     public async Task<IActionResult> Create(EventCreateVM model)
     {
+
         model.Event.ApplicationUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value;
-        Console.WriteLine($" HEREEEEEE ApplicationUserId: {model.Event.ApplicationUserId ?? "null"}");
+        ModelState.Remove("Event.ApplicationUserId");
 
         if (!ModelState.IsValid)
         {

@@ -13,8 +13,7 @@ namespace SSH_FrontEnd.Models.DTOs
 
         public DateTime? EventDate { get; set; }
 
-        [Required]
-        [BindNever]
+        
         public string ApplicationUserId { get; set; } 
     }
 }
