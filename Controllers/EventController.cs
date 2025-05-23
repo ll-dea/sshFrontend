@@ -6,7 +6,7 @@ using SSH_FrontEnd.Models.ViewModels;
 using SSH_FrontEnd.Services.IServices;
 using SSH_FrontEnd.VM.EventVM;
 
-[Authorize(Roles = "CLIENT")]
+[Authorize(Roles = "client")]
 
 public class EventController : Controller
 {

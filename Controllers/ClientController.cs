@@ -8,7 +8,7 @@ using SSH_FrontEnd.VM.Client;
 using SSH_FrontEnd.VM.EventVM;
 using System.Security.Claims;
 
-[Authorize(Roles = "CLIENT")] 
+[Authorize(Roles = "client")] 
 public class ClientController : Controller
 {
     private readonly IEventServices _eventService;

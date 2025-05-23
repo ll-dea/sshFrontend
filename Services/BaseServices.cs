@@ -42,6 +42,10 @@ namespace MagicVilla_Web.Services
                     message.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data),
                                             Encoding.UTF8, "application/json");
                 }
+                if (!string.IsNullOrEmpty(apiRequest.Token))
+                {
+                    message.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", apiRequest.Token);
+                }
 
                 var apiResponse = await client.SendAsync(message);
                 var content = await apiResponse.Content.ReadAsStringAsync();

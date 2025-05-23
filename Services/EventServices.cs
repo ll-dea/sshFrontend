@@ -1,5 +1,6 @@
 ﻿using MagicVilla_Web.Services;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 using SSH_FrontEnd.Models;
 using SSH_FrontEnd.Models.DTOs;
 using SSH_FrontEnd.Services.IServices;
@@ -18,13 +19,14 @@ namespace SSH_FrontEnd.Services
             eventUrl = configuration.GetValue<string>("ServicesUrls:EventPlannerAPI");
         }
 
-        public Task<T> CreateAsync<T>(EventDTO dto)
+        public Task<T> CreateAsync<T>(EventDTO dto, string token)
         {
             return SendAsync<T>(new APIRequest
             {
                 ApiType = SD.ApiType.POST,
                 Data = dto,
-                Url = eventUrl + "api/Event"
+                Url = eventUrl + "api/Event",
+                Token = token
             });
         }
 
