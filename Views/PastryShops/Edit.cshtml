@@ -1,0 +1,26 @@
+﻿@* Views/PastryShops/Edit.cshtml *@
+@model SSH_FrontEnd.Models.DTOs.PastryShopDTO
+
+@{
+    ViewData["Title"] = "Edit Pastry Shop";
+}
+
+<h2>Edit Pastry Shop</h2>
+
+<form asp-action="Edit">
+    <input type="hidden" asp-for="ShopId" />
+    <div class="form-group">
+        <label asp-for="ShopName"></label>
+        <input asp-for="ShopName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="PhoneNumber"></label>
+        <input asp-for="PhoneNumber" class="form-control" />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Save</button>
+    <a asp-action="Index" class="btn btn-secondary mt-2">Cancel</a>
+</form>

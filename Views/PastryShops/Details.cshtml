@@ -1,0 +1,45 @@
+﻿@model SSH_FrontEnd.Models.DTOs.PastryShopDTO
+
+@{
+    ViewData["Title"] = "Pastry Shop Details";
+}
+
+<h2 class="mb-4">@Model.ShopName</h2>
+
+<div class="mb-3">
+    <strong>Address:</strong> @Model.Address
+</div>
+<div class="mb-3">
+    <strong>Phone Number:</strong> @Model.PhoneNumber
+</div>
+
+<h4 class="mt-4">Pastries Offered</h4>
+
+@if (Model.Pastries != null && Model.Pastries.Any())
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Pastry Name</th>
+                <th>Price (€)</th>
+                <th>Pastry Type ID</th> <!-- You can customize this later -->
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var pastry in Model.Pastries)
+            {
+                <tr>
+                    <td>@pastry.PastryName</td>
+                    <td>@pastry.Price</td>
+                    <td>@pastry.PastryTypeId</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>This pastry shop has no pastries.</p>
+}
+
+<a asp-action="Index" class="btn btn-secondary">Back to List</a>

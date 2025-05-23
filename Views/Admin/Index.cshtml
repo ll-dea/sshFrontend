@@ -1,14 +1,56 @@
-﻿@model SSH_FrontEnd.VM.Admin.AdminDashboardViewModel
+﻿@inject Microsoft.AspNetCore.Mvc.IUrlHelper Url
 
-<h2>Admin Dashboard</h2>
+<div class="card shadow-sm mb-4">
+    <div class="card-header bg-secondary text-white">
+        <strong>Admin Panel</strong>
+    </div>
+    <div class="card-body p-3">
+        <ul class="list-unstyled">
 
-<p>Total Users: <strong>@Model.TotalUsers</strong></p>
-<p>Total Events: <strong>@Model.TotalEvents</strong></p>
+            <li class="mb-2">
+                <a asp-action="Users" asp-controller="Admin" class="btn btn-outline-dark w-100 text-start">
+                    👤 User Management
+                </a>
+            </li>
 
-<h4>Events by Type</h4>
-<ul>
-    @foreach (var stat in Model.EventStats)
-    {
-        <li>@stat.EventType: @stat.Count</li>
-    }
-</ul>
+            <li class="mb-2">
+                <a asp-action="ProviderDropdown" asp-controller="Admin" class="btn btn-outline-dark w-100 text-start">
+                    🏢 Providers Overview
+                </a>
+            </li>
+
+            <hr />
+
+            <li class="mb-2">
+                <strong>Manage Partners</strong>
+            </li>
+
+            <li class="mb-1">
+                <a asp-action="Index" asp-controller="PastryShops" class="btn btn-outline-secondary w-100 text-start">
+                    🧁 Manage Pastry Shops
+                </a>
+            </li>
+            <li class="mb-1">
+                <a asp-action="Index" asp-controller="Florists" class="btn btn-outline-secondary w-100 text-start">
+                    💐 Manage Florists
+                </a>
+            </li>
+            <li class="mb-1">
+                <a asp-action="Index" asp-controller="MusicProviders" class="btn btn-outline-secondary w-100 text-start">
+                    🎵 Manage Music Providers
+                </a>
+            </li>
+            <li class="mb-1">
+                <a asp-action="Index" asp-controller="VenueProviders" class="btn btn-outline-secondary w-100 text-start">
+                    🏛 Manage Venue Providers
+                </a>
+            </li>
+            <li class="mb-1">
+                <a asp-action="Index" asp-controller="Menus" class="btn btn-outline-secondary w-100 text-start">
+                    🍽 Manage Menus
+                </a>
+            </li>
+
+        </ul>
+    </div>
+</div>

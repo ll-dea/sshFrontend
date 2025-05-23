@@ -20,7 +20,7 @@ public class HomeController : Controller
 
         if (role == "admin")
         {
-            return RedirectToAction("Dashboard", "Admin");
+            return RedirectToAction("Admin");
         }
         else if (role == "client")
         {
