@@ -61,28 +61,11 @@ namespace SSH_FrontEnd.Services
             {
                 ApiType = SD.ApiType.PUT,
                 Data = dto,
-                Url = eventUrl + "api/EventAPI/" + dto.EventId
+                Url = eventUrl + "api/Event/" + dto.EventId
             });
         }
 
-        // ✅ New: Get all venues
-        public Task<T> GetAllVenuesAsync<T>()
-        {
-            return SendAsync<T>(new APIRequest
-            {
-                ApiType = SD.ApiType.GET,
-                Url = eventUrl + "api/Venue"
-            });
-        }
-
-        // ✅ New: Get all florists
-        public Task<T> GetAllFloristsAsync<T>()
-        {
-            return SendAsync<T>(new APIRequest
-            {
-                ApiType = SD.ApiType.GET,
-                Url = eventUrl + "api/Florist"
-            });
-        }
+        
+        
     }
 }

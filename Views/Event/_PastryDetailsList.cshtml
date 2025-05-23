@@ -1,53 +1,8 @@
 ﻿@model List<SSH_FrontEnd.Models.DTOs.PastryShopDTO>
-
-<h4 class="mb-4">🍰 Pastry Shops and Their Pastries</h4>
-
-@if (Model != null && Model.Any())
+@foreach (var shop in Model)
 {
-    foreach (var shop in Model)
-    {
-        <div class="card shadow-sm rounded mb-4">
-            <div class="card-header bg-primary text-white">
-                <h5 class="mb-0">@shop.ShopName</h5>
-                <small>@shop.Address</small>
-            </div>
-            <div class="card-body">
-                @if (shop.Pastries != null && shop.Pastries.Any())
-                {
-                    <div class="row">
-                        @foreach (var pastry in shop.Pastries)
-                        {
-                            <div class="col-md-6 mb-3">
-                                <div class="border p-3 rounded d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <strong>@pastry.PastryName</strong><br />
-                                        <span class="text-muted">@pastry.Price €</span>
-                                    </div>
-                                    <button class="btn btn-sm btn-outline-success"
-                                            onclick="bookItem('Pastry', @pastry.PastryId)">
-                                        Book
-                                    </button>
-                                </div>
-                            </div>
-                        }
-                    </div>
-                }
-                else
-                {
-                    <p class="text-muted mb-0">No pastries available in this shop.</p>
-                }
-            </div>
-        </div>
-    }
+    <div>
+        <input type="checkbox" name="BookedPastryShopIds" value="@shop.ShopId" />
+        <strong>@shop.ShopName</strong> - @shop.PhoneNumber
+    </div>
 }
-else
-{
-    <div class="alert alert-info">No pastry shops found.</div>
-}
-<script>
-    function bookItem(type, id) {
-        alert(`Booked ${type} with ID: ${id}`);
-        // You can later replace this with AJAX to call a booking endpoint
-    }
-</script>
-

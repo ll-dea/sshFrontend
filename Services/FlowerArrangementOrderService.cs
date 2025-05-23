@@ -14,7 +14,7 @@ namespace SSH_FrontEnd.Services
         public FlowerArrangementOrderService(IHttpClientFactory clientFactory, IConfiguration configuration) : base(clientFactory)
         {
             _clientFactory = clientFactory;
-            _url = configuration["ServicesUrls:EventPlannerAPI"] + "api/Florist";
+            _url = configuration["ServicesUrls:EventPlannerAPI"] + "api/FlowerArrangementOrder";
         }
 
         public Task<T> GetAllAsync<T>()

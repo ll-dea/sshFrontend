@@ -27,6 +27,6 @@ namespace SSH_FrontEnd.Models.DTOs
 
         public int? OrderStatusId { get; set; }
 
-        
+        public int MusicProviderId { get; set; }
     }
 }

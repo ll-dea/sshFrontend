@@ -1,4 +1,7 @@
-﻿namespace SSH_FrontEnd.Models.DTOs
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System.ComponentModel.DataAnnotations;
+
+namespace SSH_FrontEnd.Models.DTOs
 {
     public class EventDTO
     {
@@ -10,6 +13,8 @@
 
         public DateTime? EventDate { get; set; }
 
+        [Required]
+        [BindNever]
         public string ApplicationUserId { get; set; } 
     }
 }
