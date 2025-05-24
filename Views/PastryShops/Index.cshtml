@@ -1,0 +1,44 @@
+﻿@model IEnumerable<SSH_FrontEnd.Models.DTOs.PastryShopDTO>
+
+@{
+    ViewData["Title"] = "Pastry Shops";
+}
+
+<h2>Pastry Shops</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">+ Create New</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Phone</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.ShopName</td>
+                    <td>@item.Address</td>
+                    <td>@item.PhoneNumber</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.ShopId" class="btn btn-sm btn-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@item.ShopId" class="btn btn-sm btn-danger">Delete</a>
+                        <a asp-action="Details" asp-route-id="@item.ShopId" class="btn btn-sm btn-info">Details</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="4" class="text-center">No pastry shops found.</td>
+            </tr>
+        }
+    </tbody>
+</table>

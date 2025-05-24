@@ -7,13 +7,13 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SSH_FrontEnd.Models;
 
-public partial class Menu : IHasIdAndName
+public partial class Menu 
 {
     [Key]
     public int MenuId { get; set; }
     public int Id => MenuId;
 
-    public string Name { get; set; }
+    public string Chef_Name { get; set; }
 
     public decimal Price { get; set; }
     public string Email { get; set; }

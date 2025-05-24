@@ -1,0 +1,51 @@
+﻿@model SSH_FrontEnd.Models.DTOs.MusicProviderDTO
+
+@{
+    ViewData["Title"] = "Music Provider Details";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-primary text-white">
+            <h4 class="mb-0">Music Provider Details</h4>
+        </div>
+        <div class="card-body">
+            <dl class="row fs-5">
+                <dt class="col-sm-3">Name</dt>
+                <dd class="col-sm-9">@Model.Name</dd>
+
+                <dt class="col-sm-3">Address</dt>
+                <dd class="col-sm-9">@Model.Address</dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+
+                <dt class="col-sm-3">Phone Number</dt>
+                <dd class="col-sm-9">@Model.PhoneNumber</dd>
+
+                <dt class="col-sm-3">Agency Fee</dt>
+                <dd class="col-sm-9">@Model.AgencyFee?.ToString("C")</dd>
+
+                <dt class="col-sm-3">Base Hourly Rate</dt>
+                <dd class="col-sm-9">@Model.BaseHourlyRate?.ToString("C")</dd>
+
+                <dt class="col-sm-3">Partner Status</dt>
+                <dd class="col-sm-9">@Model.PartnerStatusId</dd>
+
+                <dt class="col-sm-3">Performer Type</dt>
+                <dd class="col-sm-9">@Model.PerformerTypeId</dd>
+            </dl>
+
+
+            <div class="mt-4">
+                <a asp-action="Edit" asp-route-id="@Model.MusicProviderId" class="btn btn-warning me-2">Edit</a>
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }}

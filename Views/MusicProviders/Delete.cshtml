@@ -1,0 +1,45 @@
+﻿@model SSH_FrontEnd.Models.DTOs.MusicProviderDTO
+
+@{
+    ViewData["Title"] = "Delete Music Provider";
+}
+
+<div class="container mt-5">
+    <div class="card border-danger shadow">
+        <div class="card-header bg-danger text-white">
+            <h4 class="mb-0">Confirm Deletion</h4>
+        </div>
+        <div class="card-body">
+            <p class="text-danger fs-5">
+                Are you sure you want to delete the following music provider?
+            </p>
+
+            <dl class="row">
+                <dt class="col-sm-3">Name</dt>
+                <dd class="col-sm-9">@Model.Name</dd>
+
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+
+                <dt class="col-sm-3">Phone</dt>
+                <dd class="col-sm-9">@Model.PhoneNumber</dd>
+            </dl>
+
+            <form asp-action="Delete" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="MusicProviderId" />
+                <button type="submit" class="btn btn-danger me-2">
+                    <i class="bi bi-trash"></i> Yes, Delete
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    Cancel
+                </a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }}

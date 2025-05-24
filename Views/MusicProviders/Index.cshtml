@@ -1,0 +1,44 @@
+﻿@model List<SSH_FrontEnd.Models.DTOs.MusicProviderDTO>
+
+@{
+    ViewData["Title"] = "Music Providers";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="mb-0">Music Providers</h2>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Create New
+        </a>
+    </div>
+
+    <table class="table table-striped table-hover shadow-sm">
+        <thead class="table-light">
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Email</th>
+                <th style="width: 200px;">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Address</td>
+                    <td>@item.Email</td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.MusicProviderId" class="btn btn-sm btn-outline-warning me-1">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.MusicProviderId" class="btn btn-sm btn-outline-info me-1">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.MusicProviderId" class="btn btn-sm btn-outline-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

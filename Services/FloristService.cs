@@ -41,5 +41,16 @@ namespace SSH_FrontEnd.Services
         {
             return SendAsync<T>(new APIRequest { ApiType = SD.ApiType.DELETE, Url = $"{_url}/{id}" });
         }
+
+        // Fix for CS0535: Implementing the missing method from IFloristService  
+        public Task<T> DeleteAsync<T>(int id, string? token)
+        {
+            return SendAsync<T>(new APIRequest
+            {
+                ApiType = SD.ApiType.DELETE,
+                Url = $"{_url}/{id}",
+                Token = token
+            });
+        }
     }
 }

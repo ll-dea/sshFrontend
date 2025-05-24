@@ -1,32 +1,52 @@
 ﻿@model SSH_FrontEnd.VM.Admin.AdminProviderSelectionVM
 
-<h2>Provider Dropdowns</h2>
+@{
+    ViewData["Title"] = "Providers Overview";
+}
+
+<h2 class="mb-4">Providers Overview</h2>
 
 <form method="post">
-    <div class="form-group">
-        <label>Pastry Shop</label>
-        <select asp-for="SelectedPastryShopId" asp-items="@(new SelectList(Model.PastryShops, "PastryShopId", "Name"))" class="form-control"></select>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label asp-for="SelectedPastryShopId" class="form-label">Pastry Shop</label>
+            <select asp-for="SelectedPastryShopId" class="form-select" asp-items="@(new SelectList(Model.PastryShops, "PastryShopId", "Name"))">
+                <option value="">-- Select Pastry Shop --</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="SelectedFloristId" class="form-label">Florist</label>
+            <select asp-for="SelectedFloristId" class="form-select" asp-items="@(new SelectList(Model.Florists, "FloristId", "Name"))">
+                <option value="">-- Select Florist --</option>
+            </select>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label>Florist</label>
-        <select asp-for="SelectedFloristId" asp-items="@(new SelectList(Model.Florists, "FloristId", "Name"))" class="form-control"></select>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label asp-for="SelectedMusicProviderId" class="form-label">Music Provider</label>
+            <select asp-for="SelectedMusicProviderId" class="form-select" asp-items="@(new SelectList(Model.MusicProviders, "MusicProviderId", "Name"))">
+                <option value="">-- Select Music Provider --</option>
+            </select>
+        </div>
+
+        <div class="col-md-6">
+            <label asp-for="SelectedVenueProviderId" class="form-label">Venue Provider</label>
+            <select asp-for="SelectedVenueProviderId" class="form-select" asp-items="@(new SelectList(Model.VenueProviders, "VenueProviderId", "Name"))">
+                <option value="">-- Select Venue Provider --</option>
+            </select>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label>Music Provider</label>
-        <select asp-for="SelectedMusicProviderId" asp-items="@(new SelectList(Model.MusicProviders, "MusicProviderId", "Name"))" class="form-control"></select>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label asp-for="SelectedMenuId" class="form-label">Menu</label>
+            <select asp-for="SelectedMenuId" class="form-select" asp-items="@(new SelectList(Model.Menus, "MenuId", "Title"))">
+                <option value="">-- Select Menu --</option>
+            </select>
+        </div>
     </div>
 
-    <div class="form-group">
-        <label>Venue Provider</label>
-        <select asp-for="SelectedVenueProviderId" asp-items="@(new SelectList(Model.VenueProviders, "VenueProviderId", "Name"))" class="form-control"></select>
-    </div>
-
-    <div class="form-group">
-        <label>Menu</label>
-        <select asp-for="SelectedMenuId" asp-items="@(new SelectList(Model.Menus, "MenuId", "Title"))" class="form-control"></select>
-    </div>
-
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-primary">Submit Selection</button>
 </form>

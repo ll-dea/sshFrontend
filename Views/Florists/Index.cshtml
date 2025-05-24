@@ -1,0 +1,46 @@
+﻿@model IEnumerable<SSH_FrontEnd.Models.DTOs.FloristDTO>
+
+@{
+    ViewData["Title"] = "Florists";
+}
+
+<h2 class="mb-4">Florists</h2>
+
+<a asp-action="Create" class="btn btn-primary mb-3">+ Add New Florist</a>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-info">No florists found.</div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+        <thead class="table-dark">
+            <tr>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Fee</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var florist in Model)
+            {
+                <tr>
+                    <td>@florist.Name</td>
+                    <td>@florist.Address</td>
+                    <td>@florist.PhoneNumber</td>
+                    <td>@florist.Email</td>
+                    <td>@(florist.AgencyFee?.ToString("C") ?? "-")</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@florist.FloristId" class="btn btn-sm btn-info">Details</a>
+                        <a asp-action="Edit" asp-route-id="@florist.FloristId" class="btn btn-sm btn-warning">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@florist.FloristId" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

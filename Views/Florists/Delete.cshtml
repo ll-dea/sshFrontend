@@ -1,0 +1,34 @@
+﻿@model SSH_FrontEnd.Models.DTOs.FloristDTO
+
+@{
+    ViewData["Title"] = "Delete Florist";
+}
+
+<h2 class="mb-4 text-danger">Delete Florist</h2>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Name</dt>
+            <dd class="col-sm-9">@Model.Name</dd>
+
+            <dt class="col-sm-3">Address</dt>
+            <dd class="col-sm-9">@Model.Address</dd>
+
+            <dt class="col-sm-3">Phone Number</dt>
+            <dd class="col-sm-9">@Model.PhoneNumber</dd>
+
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+
+            <dt class="col-sm-3">Agency Fee</dt>
+            <dd class="col-sm-9">@Model.AgencyFee €</dd>
+        </dl>
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="FloristId" />
+            <button type="submit" class="btn btn-danger">Confirm Delete</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>

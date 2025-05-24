@@ -6,47 +6,64 @@ using SSH_FrontEnd.Services.IServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container
+// ------------------------------------
+// MVC + AutoMapper
+// ------------------------------------
 builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 
-// Register named HttpClient for API usage
+// ------------------------------------
+// HttpClient for API communication
+// ------------------------------------
 builder.Services.AddHttpClient("EventPlannerAPI", client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["ServicesUrls:EventPlannerAPI"]);
 });
 
-// Register services
+// ------------------------------------
+// Service Registrations (Clean & Grouped)
+// ------------------------------------
+
+// Core
 builder.Services.AddScoped<IEventServices, EventServices>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
+// Providers
 builder.Services.AddScoped<IVenueService, VenueService>();
+builder.Services.AddScoped<IVenueProviderService, VenueProviderService>();
+builder.Services.AddScoped<IVenueTypeService, VenueTypeService>();
 builder.Services.AddScoped<IFloristService, FloristService>();
 builder.Services.AddScoped<IMusicProviderService, MusicProviderService>();
 builder.Services.AddScoped<IPastryService, PastryService>();
-builder.Services.AddScoped<IUserService, UserService>();
-builder.Services.AddScoped<IMenuService, MenuServices>();
-builder.Services.AddScoped<IVenueTypeService, VenueTypeService>();
-builder.Services.AddScoped<IVenueProviderService, VenueProviderService>();
-builder.Services.AddScoped<IFlowerArrangmentService, FloristArrangmentService>();
-builder.Services.AddScoped<IOrderStatusService, OrderStatusService>();
-builder.Services.AddScoped<IMusicProviderOrderService, MusicProviderOrderServices>();
-builder.Services.AddScoped<IFlowerArrangmentOrderService, FlowerArrangementOrderService>();
-builder.Services.AddScoped<IVenueOrderService, VenueOrderService>();
-builder.Services.AddScoped<IMenuOrderService, MenuOrderService>();
-builder.Services.AddScoped<IFlowerArrangmentTypeService, FlowerArrangmentTypeService>();
-builder.Services.AddScoped<IPerformerTypeService, PerformerTypeService>();
-builder.Services.AddScoped<IMenuTypeService, MenuTypeService>();
-builder.Services.AddScoped<IPartnerStatusService, PartnerStatusService>();
-builder.Services.AddScoped<IPastryService, PastryService>();
 builder.Services.AddScoped<IPastryShopService, PastryShopService>();
-builder.Services.AddScoped<IPastryTypeService, PastryTypeService>();
-builder.Services.AddScoped<IPlaylistItemService, PlaylistItemService>();
+
+// Orders
+builder.Services.AddScoped<IVenueOrderService, VenueOrderService>();
+builder.Services.AddScoped<IMusicProviderOrderService, MusicProviderOrderServices>();
 builder.Services.AddScoped<IPastryOrderService, PastryOrderService>();
+builder.Services.AddScoped<IMenuOrderService, MenuOrderService>();
+builder.Services.AddScoped<IFlowerArrangmentOrderService, FlowerArrangementOrderService>();
 
-// HttpContext accessor
+// Menus
+builder.Services.AddScoped<IMenuService, MenuServices>();
+builder.Services.AddScoped<IMenuTypeService, MenuTypeService>();
+
+// Flowers
+builder.Services.AddScoped<IFlowerArrangmentService, FloristArrangmentService>();
+builder.Services.AddScoped<IFlowerArrangmentTypeService, FlowerArrangmentTypeService>();
+
+// Misc
+builder.Services.AddScoped<IOrderStatusService, OrderStatusService>();
+builder.Services.AddScoped<IPartnerStatusService, PartnerStatusService>();
+builder.Services.AddScoped<IPastryTypeService, PastryTypeService>();
+builder.Services.AddScoped<IPerformerTypeService, PerformerTypeService>();
+builder.Services.AddScoped<IPlaylistItemService, PlaylistItemService>();
+
+// ------------------------------------
+// HttpContext Accessor & Session
+// ------------------------------------
 builder.Services.AddHttpContextAccessor();
-
-// ? Add session services
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
@@ -55,7 +72,9 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// ? Authentication setup
+// ------------------------------------
+// Authentication (Cookies)
+// ------------------------------------
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
@@ -63,9 +82,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.AccessDeniedPath = "/Auth/AccessDenied";
     });
 
+// ------------------------------------
+// Build & Middleware
+// ------------------------------------
 var app = builder.Build();
 
-// Configure the HTTP request pipeline
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -77,9 +98,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// ? Add session to middleware pipeline
 app.UseSession();
-
 app.UseAuthentication();
 app.UseAuthorization();
 

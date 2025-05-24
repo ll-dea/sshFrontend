@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using SSH_FrontEnd.Models;
 using SSH_FrontEnd.Models.DTOs;
+using SSH_FrontEnd.Services;
 using SSH_FrontEnd.Services.IServices;
 using SSH_FrontEnd.VM.Admin;
 using System.Security.Claims;
@@ -10,13 +11,30 @@ using System.Security.Claims;
 [Authorize(Roles = "admin")]
 public class AdminController : Controller
 {
-    private readonly IEventServices _eventService;
-    private readonly IUserService _userService;
+    private readonly IPastryShopService _pastryService;
+    private readonly IFloristService _floristService;
+    private readonly IMusicProviderService _musicService;
+    private readonly IVenueProviderService _venueService;
+    private readonly IMenuService _menuService;
+    private readonly IEventServices _eventServices; // Add this missing field  
+    private readonly IUserService _userService; // Add this missing field  
 
-    public AdminController(IEventServices eventService, IUserService userService)
+    public AdminController(
+        IEventServices eventService,
+        IUserService userService,
+        IPastryShopService pastryService,
+        IFloristService floristService,
+        IMusicProviderService musicService,
+        IVenueProviderService venueService,
+        IMenuService menuService)
     {
-        _eventService = eventService;
+        _eventServices = eventService;
         _userService = userService;
+        _pastryService = pastryService;
+        _floristService = floristService;
+        _musicService = musicService;
+        _venueService = venueService;
+        _menuService = menuService;
     }
 
     public async Task<IActionResult> Index()
@@ -30,8 +48,8 @@ public class AdminController : Controller
             EventStats = new List<AdminEventStatsViewModel>()
         };
 
-        // Fetch users  
-        var userResponse = await _userService.GetAllAsync<APIResponse>(token); // Explicitly specify the type argument  
+        // Fetch users    
+        var userResponse = await _userService.GetAllAsync<APIResponse>(token); // Explicitly specify the type argument    
         if (userResponse != null && userResponse.IsSuccess && userResponse.Result is not null)
         {
             var json = JsonConvert.SerializeObject(userResponse.Result);
@@ -39,8 +57,8 @@ public class AdminController : Controller
             model.TotalUsers = users.Count;
         }
 
-        // Fetch events  
-        var eventResponse = await _eventService.GetAllAsync<APIResponse>();
+        // Fetch events    
+        var eventResponse = await _eventServices.GetAllAsync<APIResponse>();
         if (eventResponse != null && eventResponse.IsSuccess && eventResponse.Result is not null)
         {
             var json = JsonConvert.SerializeObject(eventResponse.Result);
@@ -59,6 +77,23 @@ public class AdminController : Controller
 
         return View(model);
     }
+
+
+
+    public async Task<IActionResult> ProviderDropdown()
+    {
+        var model = new AdminProviderSelectionVM
+        {
+            PastryShops = await _pastryService.GetAllAsync<List<PastryShopDTO>>(),
+            Florists = await _floristService.GetAllAsync<List<FloristDTO>>(),
+            MusicProviders = await _musicService.GetAllAsync<List<MusicProviderDTO>>(),
+            VenueProviders = await _venueService.GetAllAsync<List<VenueProviderDTO>>(),
+            Menus = await _menuService.GetAllAsync<List<MenuDTO>>()
+        };
+
+        return View(model);
+    }
+
     public async Task<IActionResult> Users()
     {
         var token = HttpContext.Session.GetString("JWTToken");
@@ -72,5 +107,4 @@ public class AdminController : Controller
 
         return View(new List<ApplicationUserDTO>());
     }
-
 }

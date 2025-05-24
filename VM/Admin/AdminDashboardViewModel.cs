@@ -4,6 +4,11 @@
     {
         public int TotalUsers { get; set; }
         public int TotalEvents { get; set; }
+        public int TotalPastryShops { get; set; }
+        public int TotalFlorists { get; set; }
+        public int TotalVenues { get; set; }
+        public int TotalMusicProviders { get; set; }
+
         public List<AdminEventStatsViewModel> EventStats { get; set; }
     }
 
