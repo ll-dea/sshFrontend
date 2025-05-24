@@ -16,7 +16,7 @@ namespace SSH_FrontEnd.Models.DTOs
         public string Address { get; set; }
 
 
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
 
         public string Email { get; set; }
@@ -33,7 +33,6 @@ namespace SSH_FrontEnd.Models.DTOs
 
         public decimal? BaseHourlyRate { get; set; }
 
-        public List<PlaylistItemDTO> PlaylistItems { get; set; } // ✅ Needed
 
 
 

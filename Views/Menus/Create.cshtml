@@ -1,0 +1,15 @@
+﻿@model SSH_FrontEnd.Models.DTOs.MenuDTO
+<h2>Create Menu</h2>
+<form asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <label asp-for="Chef_Name"></label>
+        <input asp-for="Chef_Name" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label asp-for="Price"></label>
+        <input asp-for="Price" class="form-control" />
+    </div>
+   
+    <button type="submit" class="btn btn-success">Save</button>
+</form>

@@ -12,32 +12,32 @@ namespace SSH_FrontEnd.Services {
         public VenueService(IHttpClientFactory clientFactory, IConfiguration configuration) : base(clientFactory)
         {
             _clientFactory = clientFactory;
-            _url = configuration["ServicesUrls:EventPlannerAPI"] + "api/Pastry";
+            _url = configuration["ServicesUrls:EventPlannerAPI"] + "api/Venue";
         }
 
-        public Task<T> GetAllAsync<T>()
+        public async Task<T> GetAllAsync<T>()
         {
-            return SendAsync<T>(new APIRequest { ApiType = SD.ApiType.GET, Url = _url });
+            return await SendAsync<T>(new APIRequest { ApiType = SD.ApiType.GET, Url = _url });
         }
 
-        public Task<T> GetAsync<T>(int id)
+        public async Task<T> GetAsync<T>(int id)
         {
-            return SendAsync<T>(new APIRequest { ApiType = SD.ApiType.GET, Url = $"{_url}/{id}" });
+            return await SendAsync<T>(new APIRequest { ApiType = SD.ApiType.GET, Url = $"{_url}/{id}" });
         }
 
-        public Task<T> CreateAsync<T>(VenueDTO dto)
+        public async Task<T> CreateAsync<T>(VenueDTO dto)
         {
-            return SendAsync<T>(new APIRequest { ApiType = SD.ApiType.POST, Data = dto, Url = _url });
+            return await SendAsync<T>(new APIRequest { ApiType = SD.ApiType.POST, Data = dto, Url = _url });
         }
 
-        public Task<T> UpdateAsync<T>(VenueDTO dto)
+        public async Task<T> UpdateAsync<T>(VenueDTO dto)
         {
-            return SendAsync<T>(new APIRequest { ApiType = SD.ApiType.PUT, Data = dto, Url = $"{_url}/{dto.VenueId}" });
+            return await SendAsync<T>(new APIRequest { ApiType = SD.ApiType.PUT, Data = dto, Url = $"{_url}/{dto.VenueId}" });
         }
 
-        public Task<T> DeleteAsync<T>(int id)
+        public async Task<T> DeleteAsync<T>(int id)
         {
-            return SendAsync<T>(new APIRequest { ApiType = SD.ApiType.DELETE, Url = $"{_url}/{id}" });
+            return await SendAsync<T>(new APIRequest { ApiType = SD.ApiType.DELETE, Url = $"{_url}/{id}" });
         }
 
     }

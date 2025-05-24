@@ -20,8 +20,8 @@ namespace SSH_FrontEnd.Models.DTOs
         public decimal? AgencyFee { get; set; }
 
         public int? PartnerStatusId { get; set; }
-        public List<string> FlowerArrangementTypes { get; set; }
-        public List<FlowerArrangementDTO> FlowerArrangements { get; set; } // ✅ Needed
+        //public List<string> FlowerArrangementTypes { get; set; }
+        //public List<FlowerArrangementDTO> FlowerArrangements { get; set; } // ✅ Needed
 
 
 

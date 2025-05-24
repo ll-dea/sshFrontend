@@ -9,7 +9,7 @@ namespace SSH_FrontEnd.Services.IServices
         Task<T> GetAsync<T>(int id);
         Task<T> CreateAsync<T>(FloristDTO dto);
         Task<T> UpdateAsync<T>(FloristDTO dto);
-        Task<T> DeleteAsync<T>(int id);
+        Task<T> DeleteAsync<T>(int id, string? token);
 
     }
 }

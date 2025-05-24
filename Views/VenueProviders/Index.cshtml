@@ -1,0 +1,21 @@
+﻿@model List<SSH_FrontEnd.Models.DTOs.VenueDTO>
+<h2>Venues</h2>
+<a asp-action="Create" class="btn btn-primary mb-3">Create New</a>
+<table class="table table-striped">
+    <thead><tr><th>Name</th><th>Address</th><th>Price</th><th>Actions</th></tr></thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Address</td>
+                <td>@item.Price?.ToString("C")</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.VenueId" class="btn btn-sm btn-warning">Edit</a>
+                    <a asp-action="Details" asp-route-id="@item.VenueId" class="btn btn-sm btn-info">Details</a>
+                    <a asp-action="Delete" asp-route-id="@item.VenueId" class="btn btn-sm btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
